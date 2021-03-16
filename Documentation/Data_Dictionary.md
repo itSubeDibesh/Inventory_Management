@@ -115,7 +115,7 @@ Inventory Management System (IMS)
 ## __Data Dictionary__
 After [`conceptulization`](#Conceptulization) it's time create __data dictionary__.
 
-| S.N   | Model                       | Attribute       | Data Type     | Enum Options        | Data Length | Constraint                   | Allow Null (TRUE/FALSE)   | Description                                          |
+| S.N   | Model                       | Name     | Data Type     | Enum Options        | Data Length | Attribute                   | Allow Null (TRUE/FALSE)   | Description                                          |
 | :---: | :------------------------:  | :------------:  | :----------:  | :-----------------: | :---------: | :-------------------------:  | :----------------------:  | :-------------------------------------------------:  |
 |   1   | Roles                       | RoleId          | Int           | -                   | -           | AUTO INCREAMENT, PRIMARY KEY | FALSE                     | Has Primary key and used to maintain identity        |     
 |   2   | Roles                       | Name            | VarChar       | -                   | 50          | UNIQUE                       | FALSE                     | Unique Role Assigned to Users                        |     
