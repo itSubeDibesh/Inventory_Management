@@ -31,7 +31,7 @@ Now Lets Setup Database in __MySqlWorkbench__ by following the steps below.
 1. Select Apply on prompt and Finish.
 1. Select Schemas under Navigator and select __inventory__ schema.
 1. Right Click on __inventory__ schema and select __Set as Default Schema__
-1. Open [database file](./Assets/Schema/inventory_phpmyAdmin_Dumpped.sql) script into new query tab.
+1. Open [database file](./Assets/Schema/inventory_Workbench_Dumpped.sql) script into new query tab.
 1. Exequete the Query 
  Thats It Database setup and import successfull.
 
