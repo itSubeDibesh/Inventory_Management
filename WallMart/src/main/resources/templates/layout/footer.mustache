@@ -1,0 +1,135 @@
+<!-- Warning Section Starts -->
+<!-- Older IE warning message -->
+<div id="browserSupport">
+    <Script>
+        if (navigator.appVersion.indexOf() !== -1) {
+            document.getElementById("browserSupport").innerHTML = `
+                <div class="ie-warning">
+                    <h1>Warning!!</h1>
+                    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+                    <div class="iew-container">
+                        <ul class="iew-download">
+                            <li>
+                                <a href="http://www.google.com/chrome/">
+                                    <img src="/images/browser/chrome.png" alt="Chrome">
+                                    <div>Chrome</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                    <img src="/images/browser/firefox.png" alt="Firefox">
+                                    <div>Firefox</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.opera.com">
+                                    <img src="/images/browser/opera.png" alt="Opera">
+                                    <div>Opera</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.apple.com/safari/">
+                                    <img src="/images/browser/safari.png" alt="Safari">
+                                    <div>Safari</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                                    <img src="/images/browser/ie.png" alt="">
+                                    <div>IE (9 & above)</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>Sorry for the inconvenience!</p>
+                </div>
+                `;
+        }
+    </Script>
+</div>
+
+<!-- Warning Section Ends -->
+
+<!-- Required Jquery -->
+<script type="text/javascript" src="/js/jquery/jquery.min.js "></script>
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js "></script>
+<script type="text/javascript" src="/js/popper.js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="/js/bootstrap-growl.min.js"></script>
+<!-- waves js -->
+<script src="/pages/waves/js/waves.min.js"></script>
+<!-- jquery slimscroll js -->
+<script type="text/javascript" src="/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+<!-- slimscroll js -->
+<script src="/js/jquery.mCustomScrollbar.concat.min.js "></script>
+
+<!-- menu js -->
+<script src="/js/pcoded.min.js"></script>
+<script src="/js/vertical/vertical-layout.min.js "></script>
+
+<!--Registering Custom Helpers For Handle Bars-->
+
+<script type="text/javascript" src="/js/script.js "></script>
+
+<!--Notification Section-->
+
+<script>
+    function notify(title, message, msgUrl, bg) {
+        $.growl({
+            icon: "fa fa-bullhorn",
+            title: title,
+            message: message,
+            url: msgUrl
+        }, {
+            element: 'body',
+            type: "inverse",
+            allow_dismiss: true,
+            placement: {
+                from: "top",
+                align: "right"
+            },
+            offset: {
+                x: 30,
+                y: 30
+            },
+            spacing: 10,
+            z_index: 999999,
+            delay: 2500,
+            timer: 5000,
+            url_target: '_blank',
+            mouse_over: false,
+            animate: {
+                enter: "animated bounceIn",
+                exit: "animated bounceOut"
+            },
+            icon_type: 'class',
+            template: '<div data-growl="container" class="alert '+bg+'" role="alert">' +
+                    '<button type="button" class="close" data-growl="dismiss">' +
+                    '<span aria-hidden="true">&times;</span>' +
+                    '<span class="sr-only">Close</span>' +
+                    '</button>' +
+                    '<span data-growl="icon"></span>  ' +
+                    '<span data-growl="title"></span> :  ' +
+                    '<span data-growl="message"></span> ' +
+                    '<a href="#" data-growl="url"></a> ' +
+                    '</div>'
+        });
+    };
+    <!--Setting Alert Notice-->
+    const title =
+        "{{#noticeTitle}}{{noticeTitle}}{{/noticeTitle}}{{^noticeTitle}}null{{/noticeTitle}}";
+    const message =
+        "{{#noticeMessage}}{{noticeMessage}}{{/noticeMessage}}{{^noticeMessage}}null{{/noticeMessage}}";
+    const background =
+        "{{#noticeBg}}{{noticeBg}}{{/noticeBg}}{{^noticeBg}}null{{/noticeBg}}";
+    const msgUrl =
+       "{{#msgUrl}}{{msgUrl}}{{/msgUrl}}{{^msgUrl}}null{{/msgUrl}}";
+      if(message!="null" && title!="null"){
+          notify(title, message, msgUrl, background);
+      }
+</script>
+
+</body>
+
+</html>

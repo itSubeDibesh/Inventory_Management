@@ -3,9 +3,12 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET
+@OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET
+@OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET
+@OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
 -- Schema mydb
@@ -13,364 +16,767 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema inventory
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `inventory` ;
+DROP SCHEMA IF EXISTS `inventory`;
 
 -- -----------------------------------------------------
 -- Schema inventory
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `inventory` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `inventory` ;
+CREATE SCHEMA IF NOT EXISTS `inventory` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE
+`inventory` ;
 
 -- -----------------------------------------------------
 -- Table `inventory`.`access`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`access` ;
+DROP TABLE IF EXISTS `inventory`.`access`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`access` (
-  `AccessId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `Name` VARCHAR(50) NOT NULL COMMENT 'Unique Access Assigned to Users',
-  `Description` TEXT NULL DEFAULT NULL COMMENT 'Access Description',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`AccessId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `inventory`.`access`
+(
+    `AccessId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `Name`
+    VARCHAR
+(
+    50
+) NOT NULL COMMENT 'Unique Access Assigned to Users',
+    `Description` TEXT NULL DEFAULT NULL COMMENT 'Access Description',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `AccessId`
+))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `Name` ON `inventory`.`access` (`Name` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `Name` ON `inventory`.`access` (`Name` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`customers`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`customers` ;
+DROP TABLE IF EXISTS `inventory`.`customers`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`customers` (
-  `CustomerId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `TPIN` VARCHAR(25) NOT NULL COMMENT 'Save Customers Transaction PIN ',
-  `Name` VARCHAR(200) NOT NULL COMMENT 'Save Customers Name',
-  `Address` TEXT NOT NULL COMMENT 'Save Customers Address ',
-  `Contact` BIGINT NOT NULL COMMENT ' Save Customers Contact ',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update ',
-  PRIMARY KEY (`CustomerId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `inventory`.`customers`
+(
+    `CustomerId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `TPIN`
+    VARCHAR
+(
+    25
+) NOT NULL COMMENT 'Save Customers Transaction PIN ',
+    `Name` VARCHAR
+(
+    200
+) NOT NULL COMMENT 'Save Customers Name',
+    `Address` TEXT NOT NULL COMMENT 'Save Customers Address ',
+    `Contact` BIGINT NOT NULL COMMENT ' Save Customers Contact ',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update ',
+    PRIMARY KEY
+(
+    `CustomerId`
+))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `TPIN` ON `inventory`.`customers` (`TPIN` ASC, `Contact` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `TPIN` ON `inventory`.`customers` (`TPIN` ASC, `Contact` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`productcategories`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`productcategories` ;
+DROP TABLE IF EXISTS `inventory`.`productcategories`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`productcategories` (
-  `CategoryId` INT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `ParentId` INT NULL DEFAULT NULL COMMENT 'Link Own Self if Sub Categories Exists',
-  `Name` VARCHAR(200) NOT NULL COMMENT 'Categories Name',
-  `Remarks` TEXT NULL DEFAULT NULL COMMENT 'Categories Remarks',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`CategoryId`),
-  CONSTRAINT `ProductCategories_FK_ProductCategories_ParentId`
-    FOREIGN KEY (`ParentId`)
-    REFERENCES `inventory`.`productcategories` (`CategoryId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`productcategories`
+(
+    `CategoryId`
+    INT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `ParentId`
+    INT
+    NULL
+    DEFAULT
+    NULL
+    COMMENT
+    'Link Own Self if Sub Categories Exists',
+    `Name`
+    VARCHAR
+(
+    200
+) NOT NULL COMMENT 'Categories Name',
+    `Remarks` TEXT NULL DEFAULT NULL COMMENT 'Categories Remarks',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `CategoryId`
+),
+    CONSTRAINT `ProductCategories_FK_ProductCategories_ParentId`
+    FOREIGN KEY
+(
+    `ParentId`
+)
+    REFERENCES `inventory`.`productcategories`
+(
+    `CategoryId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `Name` ON `inventory`.`productcategories` (`Name` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `Name` ON `inventory`.`productcategories` (`Name` ASC) VISIBLE;
 
-CREATE INDEX `ProductCategories_FK_ProductCategories_ParentId` ON `inventory`.`productcategories` (`ParentId` ASC) VISIBLE;
+CREATE
+INDEX `ProductCategories_FK_ProductCategories_ParentId` ON `inventory`.`productcategories` (`ParentId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`product`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`product` ;
+DROP TABLE IF EXISTS `inventory`.`product`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`product` (
-  `ProductId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `CategoryId` INT NOT NULL COMMENT 'Link Categories to Products',
-  `VendorsName` VARCHAR(200) NULL DEFAULT NULL COMMENT 'Products Vendors Name',
-  `Name` VARCHAR(200) NOT NULL COMMENT 'Products Name',
-  `Invoice Number` VARCHAR(25) NOT NULL COMMENT 'Products Purchase Invoice',
-  `Invoice Date` DATE NOT NULL COMMENT 'Products Purchase Date',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`ProductId`),
-  CONSTRAINT `Product_Fk_ProductCategories_CategoryId`
-    FOREIGN KEY (`CategoryId`)
-    REFERENCES `inventory`.`productcategories` (`CategoryId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `inventory`.`product`
+(
+    `ProductId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `CategoryId`
+    INT
+    NOT
+    NULL
+    COMMENT
+    'Link Categories to Products',
+    `VendorsName`
+    VARCHAR
+(
+    200
+) NULL DEFAULT NULL COMMENT 'Products Vendors Name',
+    `Name` VARCHAR
+(
+    200
+) NOT NULL COMMENT 'Products Name',
+    `Invoice Number` VARCHAR
+(
+    25
+) NOT NULL COMMENT 'Products Purchase Invoice',
+    `Invoice Date` DATE NOT NULL COMMENT 'Products Purchase Date',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `ProductId`
+),
+    CONSTRAINT `Product_Fk_ProductCategories_CategoryId`
+    FOREIGN KEY
+(
+    `CategoryId`
+)
+    REFERENCES `inventory`.`productcategories`
+(
+    `CategoryId`
+))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE INDEX `Product_Fk_ProductCategories_CategoryId` ON `inventory`.`product` (`CategoryId` ASC) VISIBLE;
+CREATE
+INDEX `Product_Fk_ProductCategories_CategoryId` ON `inventory`.`product` (`CategoryId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`damagedandexpiry`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`damagedandexpiry` ;
+DROP TABLE IF EXISTS `inventory`.`damagedandexpiry`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`damagedandexpiry` (
-  `DEId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `ProductId` BIGINT NOT NULL COMMENT 'Link Product to WarehouseAndMartProducts',
-  `Type` ENUM('Damage', 'Expiry') NOT NULL DEFAULT 'Expiry' COMMENT 'Save Damage or Expiry',
-  `Qunatity` DOUBLE NOT NULL COMMENT 'Damaged or Exxpired Qunatity',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`DEId`),
-  CONSTRAINT `DamagedAndExpiry_FK_Product_ProductId`
-    FOREIGN KEY (`ProductId`)
-    REFERENCES `inventory`.`product` (`ProductId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`damagedandexpiry`
+(
+    `DEId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `ProductId`
+    BIGINT
+    NOT
+    NULL
+    COMMENT
+    'Link Product to WarehouseAndMartProducts',
+    `Type`
+    ENUM
+(
+    'Damage',
+    'Expiry'
+) NOT NULL DEFAULT 'Expiry' COMMENT 'Save Damage or Expiry',
+    `Qunatity` DOUBLE NOT NULL COMMENT 'Damaged or Exxpired Qunatity',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `DEId`
+),
+    CONSTRAINT `DamagedAndExpiry_FK_Product_ProductId`
+    FOREIGN KEY
+(
+    `ProductId`
+)
+    REFERENCES `inventory`.`product`
+(
+    `ProductId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE INDEX `DamagedAndExpiry_FK_Product_ProductId` ON `inventory`.`damagedandexpiry` (`ProductId` ASC) VISIBLE;
+CREATE
+INDEX `DamagedAndExpiry_FK_Product_ProductId` ON `inventory`.`damagedandexpiry` (`ProductId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`usergroup`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`usergroup` ;
+DROP TABLE IF EXISTS `inventory`.`usergroup`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`usergroup` (
-  `GroupId` INT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `Group Number` VARCHAR(50) NOT NULL COMMENT 'Group Name ',
-  PRIMARY KEY (`GroupId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `inventory`.`usergroup`
+(
+    `GroupId`
+    INT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `Group Number`
+    VARCHAR
+(
+    50
+) NOT NULL COMMENT 'Group Name ',
+    PRIMARY KEY
+(
+    `GroupId`
+))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`logins`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`logins` ;
+DROP TABLE IF EXISTS `inventory`.`logins`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`logins` (
-  `LoginId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `GroupId` INT NOT NULL COMMENT 'Link Logins with User Group',
-  `Phone` BIGINT NOT NULL COMMENT 'Save Users Phone Number',
-  `Email` TEXT NOT NULL COMMENT 'Save Users Email Address',
-  `UserName` VARCHAR(20) NOT NULL COMMENT 'Save User Name To Access Login',
-  `Password` TEXT NOT NULL COMMENT 'Save Password To Access Login',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`LoginId`),
-  CONSTRAINT `Logins_FK_UserGroup_GroupId`
-    FOREIGN KEY (`GroupId`)
-    REFERENCES `inventory`.`usergroup` (`GroupId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`logins`
+(
+    `LoginId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `GroupId`
+    INT
+    NOT
+    NULL
+    COMMENT
+    'Link Logins with User Group',
+    `Phone`
+    BIGINT
+    NOT
+    NULL
+    COMMENT
+    'Save Users Phone Number',
+    `Email`
+    TEXT
+    NOT
+    NULL
+    COMMENT
+    'Save Users Email Address',
+    `Image`
+    TEXT
+    NULL
+    COMMENT
+    'Save Users Image',
+    `UserName`
+    VARCHAR
+(
+    20
+) NOT NULL COMMENT 'Save User Name To Access Login',
+    `Password` TEXT NOT NULL COMMENT 'Save Password To Access Login',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `LoginId`
+),
+    CONSTRAINT `Logins_FK_UserGroup_GroupId`
+    FOREIGN KEY
+(
+    `GroupId`
+)
+    REFERENCES `inventory`.`usergroup`
+(
+    `GroupId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `LoginId_UNIQUE` ON `inventory`.`logins` (`LoginId` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `LoginId_UNIQUE` ON `inventory`.`logins` (`LoginId` ASC) VISIBLE;
 
-CREATE INDEX `Logins_FK_UserGroup_GroupId` ON `inventory`.`logins` (`GroupId` ASC) VISIBLE;
+CREATE
+INDEX `Logins_FK_UserGroup_GroupId` ON `inventory`.`logins` (`GroupId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`roles`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`roles` ;
+DROP TABLE IF EXISTS `inventory`.`roles`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`roles` (
-  `RoleId` INT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `Name` VARCHAR(50) NOT NULL COMMENT 'Unique Role Assigned to Users',
-  `Description` TEXT NULL DEFAULT NULL COMMENT 'Role Description',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`RoleId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `inventory`.`roles`
+(
+    `RoleId`
+    INT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `Name`
+    VARCHAR
+(
+    50
+) NOT NULL COMMENT 'Unique Role Assigned to Users',
+    `Description` TEXT NULL DEFAULT NULL COMMENT 'Role Description',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `RoleId`
+))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `Name` ON `inventory`.`roles` (`Name` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `Name` ON `inventory`.`roles` (`Name` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`roleaccess`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`roleaccess` ;
+DROP TABLE IF EXISTS `inventory`.`roleaccess`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`roleaccess` (
-  `RoleAccessId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `GroupId` INT NOT NULL COMMENT 'Link Logins with User Group',
-  `RoleId` INT NOT NULL COMMENT 'Link Role to RoleAccess Table',
-  `AccessId` BIGINT NOT NULL COMMENT 'Link Access to RoleAccess Table',
-  `Status` ENUM('Active', 'Inactive') NOT NULL DEFAULT 'Active' COMMENT 'Save RoleAccess To Active or Inactive',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`RoleAccessId`),
-  CONSTRAINT `RoleAccess_FK_Access_AccessId`
-    FOREIGN KEY (`AccessId`)
-    REFERENCES `inventory`.`access` (`AccessId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`roleaccess`
+(
+    `RoleAccessId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `GroupId`
+    INT
+    NOT
+    NULL
+    COMMENT
+    'Link Logins with User Group',
+    `RoleId`
+    INT
+    NOT
+    NULL
+    COMMENT
+    'Link Role to RoleAccess Table',
+    `AccessId`
+    BIGINT
+    NOT
+    NULL
+    COMMENT
+    'Link Access to RoleAccess Table',
+    `Status`
+    ENUM
+(
+    'Active',
+    'Inactive'
+) NOT NULL DEFAULT 'Active' COMMENT 'Save RoleAccess To Active or Inactive',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `RoleAccessId`
+),
+    CONSTRAINT `RoleAccess_FK_Access_AccessId`
+    FOREIGN KEY
+(
+    `AccessId`
+)
+    REFERENCES `inventory`.`access`
+(
+    `AccessId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `RoleAccess_FK_Roles_RoleId`
-    FOREIGN KEY (`RoleId`)
-    REFERENCES `inventory`.`roles` (`RoleId`)
+    CONSTRAINT `RoleAccess_FK_Roles_RoleId`
+    FOREIGN KEY
+(
+    `RoleId`
+)
+    REFERENCES `inventory`.`roles`
+(
+    `RoleId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `RoleAccess_FK_UserGroup_GroupId`
-    FOREIGN KEY (`GroupId`)
-    REFERENCES `inventory`.`usergroup` (`GroupId`)
+    CONSTRAINT `RoleAccess_FK_UserGroup_GroupId`
+    FOREIGN KEY
+(
+    `GroupId`
+)
+    REFERENCES `inventory`.`usergroup`
+(
+    `GroupId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE INDEX `RoleAccess_FK_Roles_RoleId` ON `inventory`.`roleaccess` (`RoleId` ASC) VISIBLE;
+CREATE
+INDEX `RoleAccess_FK_Roles_RoleId` ON `inventory`.`roleaccess` (`RoleId` ASC) VISIBLE;
 
-CREATE INDEX `RoleAccess_FK_Access_AccessId` ON `inventory`.`roleaccess` (`AccessId` ASC) VISIBLE;
+CREATE
+INDEX `RoleAccess_FK_Access_AccessId` ON `inventory`.`roleaccess` (`AccessId` ASC) VISIBLE;
 
-CREATE INDEX `RoleAccess_FK_UserGroup_GroupId` ON `inventory`.`roleaccess` (`GroupId` ASC) VISIBLE;
+CREATE
+INDEX `RoleAccess_FK_UserGroup_GroupId` ON `inventory`.`roleaccess` (`GroupId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`users`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`users` ;
+DROP TABLE IF EXISTS `inventory`.`users`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`users` (
-  `UserId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `LoginId` BIGINT NOT NULL COMMENT 'Link Login to Users Table',
-  `FullName` VARCHAR(200) NOT NULL COMMENT 'Save User Full Name',
-  `ContactNumber` BIGINT NOT NULL COMMENT 'Save Users Contact Number',
-  `Address` TEXT NOT NULL COMMENT 'Save Users Address',
-  `DOB` DATE NOT NULL COMMENT 'Save Users Date of Birth',
-  `Gender` ENUM('Male', 'Female', 'Others') NOT NULL COMMENT 'Save Users Gender',
-  `TPIN` VARCHAR(25) NOT NULL COMMENT 'Save Users Transaction PIN',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`UserId`),
-  CONSTRAINT `Users_FK_Logins_LoginId`
-    FOREIGN KEY (`LoginId`)
-    REFERENCES `inventory`.`logins` (`LoginId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`users`
+(
+    `UserId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `LoginId`
+    BIGINT
+    NOT
+    NULL
+    COMMENT
+    'Link Login to Users Table',
+    `FullName`
+    VARCHAR
+(
+    200
+) NOT NULL COMMENT 'Save User Full Name',
+    `ContactNumber` BIGINT NOT NULL COMMENT 'Save Users Contact Number',
+    `Address` TEXT NOT NULL COMMENT 'Save Users Address',
+    `DOB` DATE NOT NULL COMMENT 'Save Users Date of Birth',
+    `Gender` ENUM
+(
+    'Male',
+    'Female',
+    'Others'
+) NOT NULL COMMENT 'Save Users Gender',
+    `TPIN` VARCHAR
+(
+    25
+) NOT NULL COMMENT 'Save Users Transaction PIN',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `UserId`
+),
+    CONSTRAINT `Users_FK_Logins_LoginId`
+    FOREIGN KEY
+(
+    `LoginId`
+)
+    REFERENCES `inventory`.`logins`
+(
+    `LoginId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `ContactNumber` ON `inventory`.`users` (`ContactNumber` ASC, `TPIN` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `ContactNumber` ON `inventory`.`users` (`ContactNumber` ASC, `TPIN` ASC) VISIBLE;
 
-CREATE INDEX `Users_FK_Logins_LoginId` ON `inventory`.`users` (`LoginId` ASC) VISIBLE;
+CREATE
+INDEX `Users_FK_Logins_LoginId` ON `inventory`.`users` (`LoginId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`sales`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`sales` ;
+DROP TABLE IF EXISTS `inventory`.`sales`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`sales` (
-  `SalesId` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `InvoiceNumber` VARCHAR(25) NOT NULL COMMENT 'Products Sales Invoice',
-  `InvoiceDate` DATE NOT NULL COMMENT 'Products Sales Date  ',
-  `ProductId` BIGINT NOT NULL COMMENT 'Link Sales to Products ',
-  `CustomerId` BIGINT NOT NULL COMMENT 'Link Sales to Customers ',
-  `UserId` BIGINT NOT NULL COMMENT 'Link Sales to User',
-  `AmountReceived` DOUBLE NOT NULL COMMENT 'Save Amounts Received ',
-  `AmountReturned` DOUBLE NOT NULL COMMENT 'Save Amounts Returned',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert ',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update ',
-  PRIMARY KEY (`SalesId`),
-  CONSTRAINT `Sales_FK_Customers_CustomerId`
-    FOREIGN KEY (`CustomerId`)
-    REFERENCES `inventory`.`customers` (`CustomerId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`sales`
+(
+    `SalesId`
+    BIGINT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `InvoiceNumber`
+    VARCHAR
+(
+    25
+) NOT NULL COMMENT 'Products Sales Invoice',
+    `InvoiceDate` DATE NOT NULL COMMENT 'Products Sales Date  ',
+    `ProductId` BIGINT NOT NULL COMMENT 'Link Sales to Products ',
+    `CustomerId` BIGINT NOT NULL COMMENT 'Link Sales to Customers ',
+    `UserId` BIGINT NOT NULL COMMENT 'Link Sales to User',
+    `AmountReceived` DOUBLE NOT NULL COMMENT 'Save Amounts Received ',
+    `AmountReturned` DOUBLE NOT NULL COMMENT 'Save Amounts Returned',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert ',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update ',
+    PRIMARY KEY
+(
+    `SalesId`
+),
+    CONSTRAINT `Sales_FK_Customers_CustomerId`
+    FOREIGN KEY
+(
+    `CustomerId`
+)
+    REFERENCES `inventory`.`customers`
+(
+    `CustomerId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `Sales_FK_Product_ProductId`
-    FOREIGN KEY (`ProductId`)
-    REFERENCES `inventory`.`product` (`ProductId`)
+    CONSTRAINT `Sales_FK_Product_ProductId`
+    FOREIGN KEY
+(
+    `ProductId`
+)
+    REFERENCES `inventory`.`product`
+(
+    `ProductId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `Sales_FK_Users_UserId`
-    FOREIGN KEY (`UserId`)
-    REFERENCES `inventory`.`users` (`UserId`)
+    CONSTRAINT `Sales_FK_Users_UserId`
+    FOREIGN KEY
+(
+    `UserId`
+)
+    REFERENCES `inventory`.`users`
+(
+    `UserId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE INDEX `Sales_FK_Product_ProductId` ON `inventory`.`sales` (`ProductId` ASC) VISIBLE;
+CREATE
+INDEX `Sales_FK_Product_ProductId` ON `inventory`.`sales` (`ProductId` ASC) VISIBLE;
 
-CREATE INDEX `Sales_FK_Customers_CustomerId` ON `inventory`.`sales` (`CustomerId` ASC) VISIBLE;
+CREATE
+INDEX `Sales_FK_Customers_CustomerId` ON `inventory`.`sales` (`CustomerId` ASC) VISIBLE;
 
-CREATE INDEX `Sales_FK_Users_UserId` ON `inventory`.`sales` (`UserId` ASC) VISIBLE;
+CREATE
+INDEX `Sales_FK_Users_UserId` ON `inventory`.`sales` (`UserId` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`warehouseandmart`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`warehouseandmart` ;
+DROP TABLE IF EXISTS `inventory`.`warehouseandmart`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`warehouseandmart` (
-  `WMId` INT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `Name` VARCHAR(200) NOT NULL COMMENT 'Warehouse or Mart Name',
-  `Type` ENUM('Warehouse', 'Mart') NOT NULL DEFAULT 'Warehouse' COMMENT 'Save Warehouse or Mart',
-  `Address` TEXT NOT NULL COMMENT 'Save Warehouse or Mart Address',
-  `Contact` BIGINT NOT NULL COMMENT 'Save Warehouse or Mart Contact',
-  `Description` TEXT NULL DEFAULT NULL COMMENT 'Warehouse or Mart Contact Description',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`WMId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `inventory`.`warehouseandmart`
+(
+    `WMId`
+    INT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `Name`
+    VARCHAR
+(
+    200
+) NOT NULL COMMENT 'Warehouse or Mart Name',
+    `Type` ENUM
+(
+    'Warehouse',
+    'Mart'
+) NOT NULL DEFAULT 'Warehouse' COMMENT 'Save Warehouse or Mart',
+    `Address` TEXT NOT NULL COMMENT 'Save Warehouse or Mart Address',
+    `Contact` BIGINT NOT NULL COMMENT 'Save Warehouse or Mart Contact',
+    `Description` TEXT NULL DEFAULT NULL COMMENT 'Warehouse or Mart Contact Description',
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
+    `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
+    PRIMARY KEY
+(
+    `WMId`
+))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE UNIQUE INDEX `Contact` ON `inventory`.`warehouseandmart` (`Contact` ASC) VISIBLE;
+CREATE
+UNIQUE INDEX `Contact` ON `inventory`.`warehouseandmart` (`Contact` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `inventory`.`warehouseandmartproducts`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `inventory`.`warehouseandmartproducts` ;
+DROP TABLE IF EXISTS `inventory`.`warehouseandmartproducts`;
 
-CREATE TABLE IF NOT EXISTS `inventory`.`warehouseandmartproducts` (
-  `WMProductId` INT NOT NULL AUTO_INCREMENT COMMENT 'Has Primary key and used to maintain identity',
-  `WMId` INT NOT NULL COMMENT '	Link WarehouseAndMart to WarehouseAndMartProducts',
-  `ProductId` BIGINT NOT NULL COMMENT 'Link Product to WarehouseAndMartProducts',
-  `AvailableQTY` DOUBLE NOT NULL COMMENT 'Available Qunatity',
-  `PurchasedQTY` DOUBLE NOT NULL COMMENT 'Purchased Qunatity',
-  `PurchasedPrice` DOUBLE NOT NULL COMMENT 'Purchased Price',
-  `SellingPrice` DOUBLE NOT NULL COMMENT 'Selling Price',
-  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Save Current Time Stamp on Insert',
-  `UpdatedAt` TIMESTAMP NULL DEFAULT NULL COMMENT 'Save Current Time Stamp on Update',
-  PRIMARY KEY (`WMProductId`),
-  CONSTRAINT `WarehouseAndMartProducts_FK_Product_ProductId`
-    FOREIGN KEY (`ProductId`)
-    REFERENCES `inventory`.`product` (`ProductId`)
+CREATE TABLE IF NOT EXISTS `inventory`.`warehouseandmartproducts`
+(
+    `WMProductId`
+    INT
+    NOT
+    NULL
+    AUTO_INCREMENT
+    COMMENT
+    'Has Primary key and used to maintain identity',
+    `WMId`
+    INT
+    NOT
+    NULL
+    COMMENT
+    '	Link WarehouseAndMart to WarehouseAndMartProducts',
+    `ProductId`
+    BIGINT
+    NOT
+    NULL
+    COMMENT
+    'Link Product to WarehouseAndMartProducts',
+    `AvailableQTY`
+    DOUBLE
+    NOT
+    NULL
+    COMMENT
+    'Available Qunatity',
+    `PurchasedQTY`
+    DOUBLE
+    NOT
+    NULL
+    COMMENT
+    'Purchased Qunatity',
+    `PurchasedPrice`
+    DOUBLE
+    NOT
+    NULL
+    COMMENT
+    'Purchased Price',
+    `SellingPrice`
+    DOUBLE
+    NOT
+    NULL
+    COMMENT
+    'Selling Price',
+    `CreatedAt`
+    TIMESTAMP
+    NOT
+    NULL
+    DEFAULT
+    CURRENT_TIMESTAMP
+    COMMENT
+    'Save Current Time Stamp on Insert',
+    `UpdatedAt`
+    TIMESTAMP
+    NULL
+    DEFAULT
+    NULL
+    COMMENT
+    'Save Current Time Stamp on Update',
+    PRIMARY
+    KEY
+(
+    `WMProductId`
+),
+    CONSTRAINT `WarehouseAndMartProducts_FK_Product_ProductId`
+    FOREIGN KEY
+(
+    `ProductId`
+)
+    REFERENCES `inventory`.`product`
+(
+    `ProductId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `WarehouseAndMartProducts_FK_WarehouseAndMart_WMId`
-    FOREIGN KEY (`WMId`)
-    REFERENCES `inventory`.`warehouseandmart` (`WMId`)
+    CONSTRAINT `WarehouseAndMartProducts_FK_WarehouseAndMart_WMId`
+    FOREIGN KEY
+(
+    `WMId`
+)
+    REFERENCES `inventory`.`warehouseandmart`
+(
+    `WMId`
+)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE INDEX `WarehouseAndMartProducts_FK_WarehouseAndMart_WMId` ON `inventory`.`warehouseandmartproducts` (`WMId` ASC) VISIBLE;
+CREATE
+INDEX `WarehouseAndMartProducts_FK_WarehouseAndMart_WMId` ON `inventory`.`warehouseandmartproducts` (`WMId` ASC) VISIBLE;
 
-CREATE INDEX `WarehouseAndMartProducts_FK_Product_ProductId` ON `inventory`.`warehouseandmartproducts` (`ProductId` ASC) VISIBLE;
+CREATE
+INDEX `WarehouseAndMartProducts_FK_Product_ProductId` ON `inventory`.`warehouseandmartproducts` (`ProductId` ASC) VISIBLE;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET
+SQL_MODE=@OLD_SQL_MODE;
+SET
+FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET
+UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

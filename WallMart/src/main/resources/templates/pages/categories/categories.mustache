@@ -1,0 +1,149 @@
+{{>layout/bodyHead}}
+<div class="col-md-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Categories List</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadCategoriesList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <div class="text-right mb-2">
+                    <a href="/categories/Add/category" class="btn btn-primary brn-sm badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Category</a>
+                </div>
+                <table class="table" id="categoryTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Category Name</th>
+                        <th>Sub-Category Of</th>
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody id="categoriesDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+<div class="col-md-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Sub Category List</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option  d-md-none d-xl-block">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadSubCategoriesList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <div class="text-right mb-2">
+                    <a href="" class="btn btn-primary brn-sm badge badge-pill"><i class="fas fa-plus"></i> Add Sub
+                        Category</a>
+                </div>
+                <table class="table" id="subCategoryTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Parent Category Name</th>
+                        <th>Assigned Sub Category</th>
+                        <th class="text-center">Action</th>
+                        <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody id="subCategoriesDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+{{>layout/dataTable}}
+<script>
+    function setCategoriesList() {
+        fetch("/api/categories")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("categoriesDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].name}</td>
+                                            <td>${response[i].parentId != null ? response[i].parentId.name : "-"}</td>
+                                            <td class="text-center"><a href="/categories/Update/category/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit {{PageTitle}}"><i class="fas fa-edit"></i></a></td>
+                                            <td class="text-center"><a href="/categories/Delete/category/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete {{PageTitle}}"><i class="fas fa-trash"></i></a></td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#categoryTable').DataTable({
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("categoriesDataset");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="5" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+
+    function setSubCategoriesList() {
+        fetch("/api/categories/subcategories")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("subCategoriesDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].parentId.name}</td>
+                                            <td>${response[i] != null ? response[i].name : "-"}</td>
+                                            <td class="text-center"><a href="/categories/subCategory/${response[i].parentId.id}" class="btn btn-primary btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Edit Sub-{{PageTitle}}"><i class="fas fa-edit"></i></a> </td>
+                                            <td class="text-center"><a href="" class="btn btn-danger btn-md badge badge-pill text-center"><i class="fas fa-trash"  data-toggle="tooltip" data-placement="left" title="Delete Sub-{{PageTitle}}"></i></a></td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#subCategoryTable').DataTable({
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("subCategoriesDataset");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="5" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+
+    }
+
+    setCategoriesList();
+    setSubCategoriesList();
+
+    document.getElementById("reloadCategoriesList").addEventListener("click", setCategoriesList);
+    document.getElementById("reloadSubCategoriesList").addEventListener("click", setSubCategoriesList);
+</script>
