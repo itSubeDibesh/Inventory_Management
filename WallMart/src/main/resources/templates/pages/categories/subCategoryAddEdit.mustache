@@ -2,7 +2,7 @@
 <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            <h5>{{Action}} Category</h5>
+            <h5>{{Action}} {{PageTitle}}</h5>
             <div class="card-header-right">
                 <ul class="list-unstyled card-option">
                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -14,26 +14,37 @@
         </div>
         <div class="card-block">
             <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
-            <form>
+            <form action="/categories/{{Action}}/subCategory" method="post">
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Category Name</label>
+                    <label class="col-sm-2 col-form-label">Sub Category Name</label>
+                    {{#editCategory.id}}
+                        <input type="hidden" id="categoryId" name="categoryId"
+                               value="{{editCategory.id}}">
+                    {{/editCategory.id}}
                     <div class="col-sm-10">
-                        <input type="text" name="name" id="name" value="{{editCategory.name}}" class="form-control">
+                        {{#editCategory.id}}<input type="text" id="name" name="name" disabled
+                                                   value="{{editCategory.name}}">
+                        {{/editCategory.id}}
+                        {{^editCategory.id}}
+                            <select name="categoryId" id="categoryId" required>
+                                <option disabled>Select a Sub category</option>
+                            </select>
+                        {{/editCategory.id}}
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Sub Category Of</label>
+                    <label class="col-sm-2 col-form-label">Parent Category</label>
                     <div class="col-sm-10">
-                        <select name="parentId" id="parentId">
-                            <option disabled>Select a parent category</option>
+                        <select name="parentId" id="parentId" required>
+                            <option disabled>Select a Parent category</option>
                         </select>
-
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Description</label>
-                    <div class="col-sm-10">
-                        <textarea rows="5" cols="5" class="form-control" name="description" id="description" placeholder="Description">{{#editCategory.description}}{{editCategory.description}}{{/editCategory.description}}</textarea>
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> {{Action}}
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
                     </div>
                 </div>
             </form>
@@ -43,16 +54,27 @@
 {{>layout/bodyFooter}}
 <script type="text/javascript" src="/js/common-pages.js"></script>
 <script>
-    /*
     fetch("/api/categories")
-    .then(resp=>resp.json())
-    .then(response=>{
-        const myParentID={{#editCategory.parentId.id}}{{editCategory.parentId.id}}{{/editCategory.parentId.id}}{{^editCategory.parentId.id}}null{{/editCategory.parentId.id}};
-        const dropDown=document.getElementById("parentId");
-        let optionList ='';
-        for (let i = 0; i < response.length; i++) {
-            optionList+=`<option value="${response[i].id}" ${myParentID==response[i].id?"selected":""}>${response[i].name}</option>`;
-        }
-        dropDown.innerHTML+=optionList
-    })*/
+            .then(resp => resp.json())
+            .then(response => {
+                const myParentID =
+                    {{#editCategory.parentId.id}}{{editCategory.parentId.id}}{{/editCategory.parentId.id}}{{^editCategory.parentId.id}}null{{/editCategory.parentId.id}};
+                const myCategoryId =
+                    {{#editCategory.id}}{{editCategory.id}}{{/editCategory.id}}{{^editCategory.id}}null{{/editCategory.id}};
+
+                const dropDownCategoryId = document.getElementById("categoryId"),
+                        dropDownParentId = document.getElementById("parentId");
+
+                let categoryId = '',
+                        parentId = '';
+
+                for (let i = 0; i < response.length; i++) {
+                    categoryId += `<option value="${response[i].id}" ${myCategoryId == response[i].id ? "selected" : ""}>${response[i].name}</option>`;
+                   if(myCategoryId!=response[i].id)
+                    parentId += `<option value="${response[i].id}" ${myParentID == response[i].id ? "selected" : ""}>${response[i].name}</option>`;
+                }
+
+                dropDownCategoryId.innerHTML += categoryId;
+                dropDownParentId.innerHTML += parentId;
+            })
 </script>

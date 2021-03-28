@@ -1,11 +1,11 @@
-package com.itsubedibesh.wallmart.controllers.api.Categories;
+package com.itsubedibesh.wallmart.controllers.web.Categories;
 
-public class SubCategory {
+public class SubCategoryDto {
 
     private Long parentId;
     private Long categoryId;
 
-    public SubCategory(Long parentId, Long categoryId) {
+    public SubCategoryDto(Long parentId, Long categoryId) {
         this.parentId = parentId;
         this.categoryId = categoryId;
     }

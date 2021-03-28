@@ -55,7 +55,7 @@
         <div class="card-block table-border-style">
             <div class="table-responsive">
                 <div class="text-right mb-2">
-                    <a href="" class="btn btn-primary brn-sm badge badge-pill"><i class="fas fa-plus"></i> Add Sub
+                    <a href="/categories/Add/subCategory" class="btn btn-primary brn-sm badge badge-pill"><i class="fas fa-plus"></i> Add Sub
                         Category</a>
                 </div>
                 <table class="table" id="subCategoryTable">
@@ -121,8 +121,8 @@
                                             <td>${i + 1}</td>
                                             <td>${response[i].parentId.name}</td>
                                             <td>${response[i] != null ? response[i].name : "-"}</td>
-                                            <td class="text-center"><a href="/categories/subCategory/${response[i].parentId.id}" class="btn btn-primary btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Edit Sub-{{PageTitle}}"><i class="fas fa-edit"></i></a> </td>
-                                            <td class="text-center"><a href="" class="btn btn-danger btn-md badge badge-pill text-center"><i class="fas fa-trash"  data-toggle="tooltip" data-placement="left" title="Delete Sub-{{PageTitle}}"></i></a></td>
+                                            <td class="text-center"><a href="/categories/Update/subCategory/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Edit Sub-{{PageTitle}}"><i class="fas fa-edit"></i></a> </td>
+                                            <td class="text-center"><a href="/categories/Delete/subCategory/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center"><i class="fas fa-trash"  data-toggle="tooltip" data-placement="left" title="Delete Sub-{{PageTitle}}"></i></a></td>
                                         </tr>`;
                     }
                     TableData.innerHTML = null;
