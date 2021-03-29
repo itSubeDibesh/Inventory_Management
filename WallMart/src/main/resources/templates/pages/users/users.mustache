@@ -1,0 +1,105 @@
+{{>layout/bodyHead}}
+<div class="col-md-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Login List</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadLoginList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <div class="text-right mb-2">
+                    <a href="/users/Add/login" class="btn btn-primary brn-sm badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Login</a>
+                </div>
+                <table class="table" id="loginsTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Avatar</th>
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody id="loginsDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+<div class="col-md-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>{{PageTitle}} List</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option  d-md-none d-xl-block">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadUserList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <div class="text-right mb-2">
+                    <a href="/users/Add/user" class="btn btn-primary brn-sm badge badge-pill"><i
+                            class="fas fa-plus"></i> Add User</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+{{>layout/dataTable}}
+<script>
+    function setLoginsList() {
+        fetch("/api/logins")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("loginsDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].userName}</td>
+                                            <td><a href="mailto:${response[i].email}">${response[i].email}</a></td>
+                                            <td><a href="tel:${response[i].phone}">${response[i].phone}</a></td>
+                                            <td><a href="${response[i].avatar.length != 0 ? response[i].imagePath : '/images/defaultUser.png'}" target="_blank"><img src="${response[i].avatar.length != 0 ? response[i].imagePath : '/images/defaultUser.png'}" style="width:100%; height:auto;" class="img-radius img-thumbnail" alt="${response[i].userName}"></a></td>
+                                            <td class="text-center"><a href="/users/Update/login/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit {{PageTitle}} Login"><i class="fas fa-edit"></i></a></td>
+                                            <td class="text-center"><a href="/users/Delete/login/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete {{PageTitle}} Login"><i class="fas fa-trash"></i></a></td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#loginsTable').DataTable({
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("loginsTable");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="7" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+
+    setLoginsList();
+    document.getElementById("reloadLoginList").addEventListener("click", setLoginsList);
+</script>

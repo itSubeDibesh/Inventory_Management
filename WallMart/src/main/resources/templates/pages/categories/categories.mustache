@@ -3,7 +3,7 @@
     <!-- Inverse table card start -->
     <div class="card">
         <div class="card-header">
-            <h5>Categories List</h5>
+            <h5>{{PageTitle}} List</h5>
             <div class="card-header-right d-md-none d-xl-block">
                 <ul class="list-unstyled card-option">
                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -42,7 +42,7 @@
     <!-- Inverse table card start -->
     <div class="card">
         <div class="card-header">
-            <h5>Sub Category List</h5>
+            <h5>Sub {{PageTitle}} List</h5>
             <div class="card-header-right">
                 <ul class="list-unstyled card-option  d-md-none d-xl-block">
                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -135,7 +135,9 @@
                     });
                 }).catch(err => {
             const TableData = document.getElementById("subCategoriesDataset");
-            TableData.innerHTML = null;
+            TableData.innerHTML = null; setSubCategoriesList();
+
+            document.getElementById("reloadCategoriesList").addEventListener("click", setCategoriesList);
             TableData.innerHTML += `<tr><td colspan="5" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
         })
 

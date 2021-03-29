@@ -30,15 +30,6 @@ public class CategoriesApi {
         }
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<Categories> getCategoriesById(@PathVariable("id") long id) {
-        Optional<Categories> categoryData = categoriesRepo.findById(id);
-        if (categoryData.isPresent()) {
-            return new ResponseEntity<>(categoryData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
     @GetMapping("/categories/subcategories")
     public ResponseEntity<List<Categories>> getAllSubCategories() {

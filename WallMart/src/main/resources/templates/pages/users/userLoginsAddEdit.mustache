@@ -1,0 +1,100 @@
+{{>layout/bodyHead}}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>{{Action}} Login</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><i class="fa fa-refresh reload-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/users/{{Action}}/login" method="post" enctype="multipart/form-data">
+                {{#editLogin.id}}<input type="hidden" id="id" name="id" value="{{editLogin.id}}">{{/editLogin.id}}
+                <!--  Set Form Fields  -->
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Avatar</label>
+                    <div class="col-sm-10">
+                        {{#editLogin.getImagePath}}
+                            {{#editLogin.avatar}}<input type="hidden" id="avatar" name="avatar" value="{{editLogin.avatar}}">{{/editLogin.avatar}}
+                            <div class="m-2">
+                                <span class="form-control-static">Previous Image</span>
+                                <br>
+                                <img src="/{{#editLogin.getImagePath}}{{editLogin.getImagePath}}{{/editLogin.getImagePath}}"
+                                     class="img-thumbnail img-radius" style="width: 15%;height: auto;"
+                                     alt="{{#editLogin.userName}}{{editLogin.userName}}{{/editLogin.userName}}">
+                            </div>
+                        {{/editLogin.getImagePath}}
+                        <input type="file" name="image" id="image" accept="image/png, image/jpeg" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Username</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="userName" id="userName"
+                               value="{{#editLogin.userName}}{{editLogin.userName}}{{/editLogin.userName}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <input type="password" required name="password" id="password" class="form-control"
+                                       maxlength="20" minlength="8">
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-md bg-transparent" onclick="showPassword()"><i
+                                        class="fas fa-eye" id="showHide"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Email Address</label>
+                    <div class="col-sm-10">
+                        <input type="email" required name="email" id="email"
+                               value="{{#editLogin.email}}{{editLogin.email}}{{/editLogin.email}}" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Phone Number</label>
+                    <div class="col-sm-10">
+                        <input type="tel" required name="phone" id="phone"
+                               value="{{#editLogin.phone}}{{editLogin.phone}}{{/editLogin.phone}}" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> {{Action}}
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>layout/bodyFooter}}
+<script type="text/javascript" src="/js/common-pages.js"></script>
+<script>
+    function showPassword() {
+        const password = document.getElementById("password"),
+                showHide = document.getElementById("showHide");
+        if (password.type == "password") {
+            // Show Password
+            showHide.classList.replace("fa-eye", "fa-eye-slash")
+            password.type = "text";
+        } else {
+            // Hide Password
+            showHide.classList.replace("fa-eye-slash", "fa-eye");
+            password.type = "password";
+        }
+    }
+</script>

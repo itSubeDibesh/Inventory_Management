@@ -56,7 +56,7 @@ public class CategoriesWeb {
     @PostMapping(value = "/Add/category", consumes = "application/x-www-form-urlencoded")
     public String createCategoryAction(@Valid CategoriesDto categories, RedirectAttributes redirectAttributes) {
         try {
-            Categories _category = categoriesRepo.save(new Categories(categories.getName(), categories.getDescription()));
+           categoriesRepo.save(new Categories(categories.getName(), categories.getDescription()));
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Category Added Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
