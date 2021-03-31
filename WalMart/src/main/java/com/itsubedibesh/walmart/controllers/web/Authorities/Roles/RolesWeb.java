@@ -2,21 +2,15 @@ package com.itsubedibesh.walmart.controllers.web.Authorities.Roles;
 
 import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.RoleRepo;
 import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.Roles;
-import com.itsubedibesh.walmart.controllers.api.Categories.Categories;
-import com.itsubedibesh.walmart.controllers.api.Users.Logins.Logins;
-import com.itsubedibesh.walmart.controllers.api.Users.Logins.LoginsRepo;
-import com.itsubedibesh.walmart.controllers.configuration.FileUploader.FileUploader;
-import com.itsubedibesh.walmart.controllers.web.Categories.CategoriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -37,7 +31,7 @@ public class RolesWeb {
         model.addAttribute("PageTitle", "Role");
         model.addAttribute("Action", "Add");
         model.addAttribute("BaseLink", "roles_and_access");
-        return "pages/roles_and_access/roles_and_accessAddEdit";
+        return "/pages/roles_and_access/rolesAddEdit";
     }
 
     @GetMapping("/Update/role/{roleId}")
@@ -48,7 +42,7 @@ public class RolesWeb {
             model.addAttribute("Action", "Update");
             model.addAttribute("BaseLink", "roles_and_access");
             model.addAttribute("editRole", roleData.get());
-            return "pages/roles_and_access/roles_and_accessAddEdit";
+            return "/pages/roles_and_access/rolesAddEdit";
         } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
             redirectAttributes.addFlashAttribute("noticeMessage", "Role Details Not Found");
@@ -57,7 +51,7 @@ public class RolesWeb {
         }
     }
 
-    @PostMapping(value = "/Add/role")
+    @PostMapping(value = "/Add/role",consumes = "application/x-www-form-urlencoded")
     public String createRoleAction(Roles roles, RedirectAttributes redirectAttributes) {
         try {
             roleRepo.save(new Roles(roles.getName(), roles.getDescription()));

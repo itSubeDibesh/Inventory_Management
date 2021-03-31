@@ -27,13 +27,6 @@ $(document).ready(function () {
     }, 2000);
     // $('.pcoded').addClass('loaded');
 
-    $('.form-control').on('blur', function () {
-        if ($(this).val().length > 0) {
-            $(this).addClass("fill");
-        } else {
-            $(this).removeClass("fill");
-        }
-    });
     $('.form-control').on('focus', function () {
         $(this).addClass("fill");
     });
