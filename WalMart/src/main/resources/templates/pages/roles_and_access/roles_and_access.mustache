@@ -1,0 +1,74 @@
+{{>layout/bodyHead}}
+<div class="col-md-5">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Roles List</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadRolesList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <div class="text-right mb-2">
+                    <a href="/roles_and_access/Add/role" class="btn btn-primary brn-sm badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Role</a>
+                </div>
+                <table class="table" id="rolesTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Role</th>
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody id="rolesDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+{{>layout/dataTable}}
+<script>
+    function setRolesList() {
+        fetch("/api/roles")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("rolesDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].name}</td>
+                                            <td class="text-center"><a href="/roles_and_access/Update/role/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit Role"><i class="fas fa-edit"></i></a></td>
+                                            <td class="text-center"><a href="/roles_and_access/Delete/role/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete Role"><i class="fas fa-trash"></i></a></td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#rolesTable').DataTable({
+                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("rolesTable");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="4" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+
+    setRolesList();
+    document.getElementById("reloadRolesList").addEventListener("click", setRolesList);
+</script>

@@ -107,7 +107,6 @@ public class UsersWeb {
                 redirectAttributes.addFlashAttribute("noticeMessage", "Login Deleted Successfully");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
             } catch (Exception e) {
-                System.out.println(e);
                 redirectAttributes.addFlashAttribute("noticeTitle", "Error");
                 redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Login Details");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
