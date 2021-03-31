@@ -1,4 +1,4 @@
-package com.itsubedibesh.walmart.controllers.api.Authorities.RoleAccessMap;
+package com.itsubedibesh.walmart.controllers.api.Authorities.Mappings.RoleAccessMap;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

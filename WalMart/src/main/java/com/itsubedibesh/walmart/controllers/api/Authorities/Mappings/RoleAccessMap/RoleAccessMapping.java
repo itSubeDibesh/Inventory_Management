@@ -1,4 +1,4 @@
-package com.itsubedibesh.walmart.controllers.api.Authorities.RoleAccessMap;
+package com.itsubedibesh.walmart.controllers.api.Authorities.Mappings.RoleAccessMap;
 
 import com.itsubedibesh.walmart.controllers.api.Authorities.Access.Access;
 import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.Roles;

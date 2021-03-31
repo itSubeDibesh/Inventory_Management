@@ -1,6 +1,6 @@
 const blockNavsElements = {
         inventory: `categories,products,warehouse_and_marts,products_management,damage_and_expiry`,
-        administration: `users,roles_and_access`,
+        administration: `users,roles_and_access,login_role_mapping`,
         mart: `items_showcase,billing`,
         members: `customers,vendors`,
         analytics: `purchase_history,sales_history`

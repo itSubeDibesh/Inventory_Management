@@ -1,4 +1,4 @@
-package com.itsubedibesh.walmart.controllers.api.Authorities.LoginRoleMap;
+package com.itsubedibesh.walmart.controllers.api.Authorities.Mappings.LoginRoleMap;
 
 import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.Roles;
 import com.itsubedibesh.walmart.controllers.api.Users.Logins.Logins;
