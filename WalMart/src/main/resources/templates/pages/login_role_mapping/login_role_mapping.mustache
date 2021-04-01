@@ -41,31 +41,32 @@
     <!-- Inverse table card start -->
     <div class="card">
         <div class="card-header">
-            <h5>Access List</h5>
+            <h5>Login Role List</h5>
             <div class="card-header-right d-md-none d-xl-block">
                 <ul class="list-unstyled card-option">
                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
                     <li><i class="fa fa-window-maximize full-card"></i></li>
                     <li><i class="fa fa-minus minimize-card"></i></li>
-                    <li><a id="reloadAccessList"><i class="fa fa-refresh reload-card"></i></a></li>
+                    <li><a id="reloadLoginRoleList"><i class="fa fa-refresh reload-card"></i></a></li>
                 </ul>
             </div>
         </div>
         <div class="card-block table-border-style">
             <div class="table-responsive">
                 <div class="text-right mb-2">
-                    <a href="/login_role_mapping/Add/access" class="btn btn-primary badge badge-pill"><i
-                            class="fas fa-plus"></i> Add Access</a>
+                    <a href="/login_role_mapping/Add/loginRole" class="btn btn-primary badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Login Role</a>
                 </div>
-                <table class="table" id="accessTable">
+                <table class="table" id="loginRoleTable">
                     <thead class="bg-dark text-light">
                     <tr>
                         <th>#</th>
-                        <th>Access</th>
+                        <th>Login</th>
+                        <th>Roles</th>
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody id="accessDataset" class="text-dark">
+                    <tbody id="loginRoleDataset" class="text-dark">
 
                     </tbody>
                 </table>
@@ -123,5 +124,52 @@
     }
     setRoleAccessList();
     document.getElementById("reloadRolesAccessList").addEventListener("click", setRoleAccessList);
+
+    function setLoginRoleList() {
+        fetch("/api/loginRole")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("loginRoleDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].loginId.userName}</td>
+                                            <td>${response[i].roleId.name}</td>
+                                            <td>
+                                                <a href="/login_role_mapping/Update/loginRole/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit Login Role Map"><i class="fas fa-edit"></i></a>
+                                                <a href="/login_role_mapping/Delete/loginRole/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete Login Role Map"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#loginRoleTable').DataTable().destroy()
+                    $('#loginRoleTable').DataTable({
+                        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true,
+                        drawCallback: function (e) {
+                            var t = this.api(),
+                                    l = t.rows({
+                                        page: "current"
+                                    }).nodes(),
+                                    c = null;
+                            t.column(1, {
+                                page: "current"
+                            }).data().each(function (e, t) {
+                                c !== e && ($(l).eq(t).before('<tr class="bg-primary text-light"><td colspan="5">' + e + "'s Roles List" + "</td></tr>"), c = e)
+                            })
+                        }
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("loginRoleTable");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="5" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+    setLoginRoleList();
+    document.getElementById("reloadLoginRoleList").addEventListener("click", setLoginRoleList);
 
 </script>

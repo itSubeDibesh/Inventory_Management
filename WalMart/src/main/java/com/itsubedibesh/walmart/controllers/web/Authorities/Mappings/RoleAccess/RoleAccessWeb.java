@@ -6,8 +6,6 @@ import com.itsubedibesh.walmart.controllers.api.Authorities.Mappings.RoleAccessM
 import com.itsubedibesh.walmart.controllers.api.Authorities.Mappings.RoleAccessMap.RoleAccessMappingRepo;
 import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.RoleRepo;
 import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.Roles;
-import com.itsubedibesh.walmart.controllers.api.Categories.Categories;
-import com.itsubedibesh.walmart.controllers.web.Categories.CategoriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -110,7 +108,7 @@ public class RoleAccessWeb {
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Role Access Map Category");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Role Access Map");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
         }
         return "redirect:/login_role_mapping";

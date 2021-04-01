@@ -1,0 +1,91 @@
+{{>layout/bodyHead}}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>{{Action}} {{PageTitle}}</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/login_role_mapping/{{Action}}/loginRole" method="post">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Login</label>
+                    {{#editLoginRole.id}}
+                        <input type="hidden" id="id" name="id" value="{{editLoginRole.id}}">
+                    {{/editLoginRole.id}}
+                    <div class="col-sm-10">
+                        {{#editLoginRole.id}}
+                         <div class="row">
+                             <div class="col-md-6">
+                                 <input type="text" id="userName" name="userName" disabled value="{{editLoginRole.loginId.userName}}">
+                                 <input type="hidden" id="loginId" name="loginId" value="{{editLoginRole.loginId.id}}">
+                             </div>
+                             <div class="col-md-6">
+                                 {{#editLoginRole.loginId.getImagePath}}
+                                     <a  href="/{{#editLoginRole.loginId.avatar}}{{editLoginRole.loginId.getImagePath}}{{/editLoginRole.loginId.avatar}}{{^editLoginRole.loginId.avatar}}images/defaultUser.png{{/editLoginRole.loginId.avatar}}" data-lightbox="{{editLoginRole.loginId.userName}}" data-title="{{editLoginRole.loginId.userName}}'s Avatar">
+                                         <img src="/{{#editLoginRole.loginId.avatar}}{{editLoginRole.loginId.getImagePath}}{{/editLoginRole.loginId.avatar}}{{^editLoginRole.loginId.avatar}}images/defaultUser.png{{/editLoginRole.loginId.avatar}}"
+                                              class="mt-4 img-thumbnail img-radius" style="width: 25%;height: auto;"
+                                              alt="{{#editLoginRole.loginId.userName}}{{editLoginRole.loginId.userName}}{{/editLoginRole.loginId.userName}}">
+                                     </a>
+                                 {{/editLoginRole.loginId.getImagePath}}
+                             </div>
+                         </div>
+                        {{/editLoginRole.id}}
+
+                        {{^editLoginRole.id}}
+                            <select name="loginId" id="loginId" class="form-control" required>
+                                <option disabled selected>Select Login</option>
+                            </select>
+                        {{/editLoginRole.id}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Role</label>
+                    <div class="col-sm-10">
+                        <select name="roleId" id="roleId" class="form-control" required>
+                            <option disabled selected>Select Role</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> {{Action}}
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>layout/bodyFooter}}
+<script type="text/javascript" src="/js/common-pages.js"></script>
+<script>
+    const roleData = {{#editLoginRole.roleId.name}}"{{editLoginRole.roleId.name}}"{{/editLoginRole.roleId.name}}{{^editLoginRole.roleId.name}}null{{/editLoginRole.roleId.name}},
+            loginData = {{#editLoginRole.loginId.userName}}"{{editLoginRole.loginId.userName}}"{{/editLoginRole.loginId.userName}}{{^editLoginRole.loginId.userName}}null{{/editLoginRole.loginId.userName}};
+        {{^editLoginRole.id}}
+        fetch("/api/logins")
+                .then(res => res.json())
+                .then(response => {
+                    const loginId = document.getElementById("loginId");
+                    response.forEach(login => {
+                        loginId.innerHTML += `<option value="${login.id}" ${loginData != null && loginData == login.userName ? "selected" : ""}>${login.userName}${login.email != "" ? " - " + login.email : ""}</option>`;
+                    })
+                })
+        {{/editLoginRole.id}}
+
+    fetch("/api/roles")
+            .then(res => res.json())
+            .then(response => {
+                const roleId = document.getElementById("roleId");
+                response.forEach(role => {
+                    roleId.innerHTML += `<option value="${role.id}" ${roleData != null && roleData == role.name ? "selected" : ""}>${role.name}${role.description != "" ? " - " + role.description : ""}</option>`;
+                })
+            })
+</script>
