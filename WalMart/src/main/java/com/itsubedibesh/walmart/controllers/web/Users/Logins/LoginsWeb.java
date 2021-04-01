@@ -1,4 +1,4 @@
-package com.itsubedibesh.walmart.controllers.web.Users;
+package com.itsubedibesh.walmart.controllers.web.Users.Logins;
 
 import com.itsubedibesh.walmart.controllers.api.Users.Logins.Logins;
 import com.itsubedibesh.walmart.controllers.api.Users.Logins.LoginsRepo;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
-public class UsersWeb {
+public class LoginsWeb {
 
     @Autowired
     LoginsRepo loginsRepo;

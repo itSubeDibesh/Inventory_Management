@@ -95,9 +95,9 @@ public class LoginRoleWeb {
     }
 
     @GetMapping("/Delete/loginRole/{loginRoleId}")
-    public String deleteLoginRoleMapping(@PathVariable Integer roleAccessId, RedirectAttributes redirectAttributes) {
+    public String deleteLoginRoleMapping(@PathVariable Integer loginRoleId, RedirectAttributes redirectAttributes) {
         try {
-            loginRoleMappingRepo.deleteById((Integer) roleAccessId);
+            loginRoleMappingRepo.deleteById((Integer) loginRoleId);
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Login Role Map Deleted Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");

@@ -18,7 +18,7 @@ public class Roles extends Audit {
 
     @Id
     @Column(name = "RoleId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "Name", nullable = false, unique = true)

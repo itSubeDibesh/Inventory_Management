@@ -21,7 +21,7 @@ public class Logins extends Audit {
 
     @Id
     @Column(name="LoginId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "Phone",unique = true,nullable = false)

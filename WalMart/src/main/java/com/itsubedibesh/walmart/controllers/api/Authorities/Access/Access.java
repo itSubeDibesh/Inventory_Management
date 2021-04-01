@@ -24,7 +24,7 @@ public class Access extends Audit {
 
     @Id
     @Column(name = "AccessId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "Name", nullable = false, unique = true)

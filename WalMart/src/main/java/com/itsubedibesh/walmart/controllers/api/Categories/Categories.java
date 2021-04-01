@@ -23,7 +23,7 @@ public class Categories extends Audit {
     * */
     @Id
     @Column(name="CategoryId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

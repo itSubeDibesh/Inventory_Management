@@ -20,15 +20,15 @@ public class LoginRoleMapping extends Audit {
 
     @Id
     @Column(name = "LoginRoleMappingId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "loginId")
+    @ManyToOne(cascade = CascadeType.DETACH,optional = false)
+    @JoinColumn(name = "loginId",nullable = false)
     private Logins loginId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "RoleId")
+    @ManyToOne(cascade =  CascadeType.DETACH,optional = false)
+    @JoinColumn(name = "RoleId",nullable = false)
     private Roles roleId;
 
     public Integer getId() {

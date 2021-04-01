@@ -21,15 +21,15 @@ public class RoleAccessMapping extends Audit {
 
     @Id
     @Column(name = "RoleAccessMappingId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "RoleId")
+    @ManyToOne(cascade =  CascadeType.DETACH,optional = false)
+    @JoinColumn(name = "RoleId",nullable = false)
     private Roles roleId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "AccessId")
+    @ManyToOne(cascade =  CascadeType.DETACH,optional = false)
+    @JoinColumn(name = "AccessId",nullable = false)
     private Access accessId;
 
 
