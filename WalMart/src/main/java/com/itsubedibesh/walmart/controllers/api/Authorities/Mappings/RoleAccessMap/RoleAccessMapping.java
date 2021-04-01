@@ -5,6 +5,7 @@ import com.itsubedibesh.walmart.controllers.api.Authorities.Roles.Roles;
 import com.itsubedibesh.walmart.controllers.configuration.Audit.Audit;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "RoleAccessMappings")
@@ -23,13 +24,14 @@ public class RoleAccessMapping extends Audit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "RoleId")
     private Roles roleId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "AccessId")
     private Access accessId;
+
 
     public Integer getId() {
         return id;

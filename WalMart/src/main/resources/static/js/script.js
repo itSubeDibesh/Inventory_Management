@@ -183,13 +183,6 @@ $(document).ready(function () {
     Waves.attach('.float-button-light', ['waves-button', 'waves-float', 'waves-light']);
     Waves.attach('.flat-buttons', ['waves-button', 'waves-float', 'waves-light', 'flat-buttons']);
 
-    $('.form-control').on('blur', function () {
-        if ($(this).val().length > 0) {
-            $(this).addClass("fill");
-        } else {
-            $(this).removeClass("fill");
-        }
-    });
     $('.form-control').on('focus', function () {
         $(this).addClass("fill");
     });

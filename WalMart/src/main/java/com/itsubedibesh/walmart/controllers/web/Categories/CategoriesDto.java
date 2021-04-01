@@ -1,10 +1,7 @@
 package com.itsubedibesh.walmart.controllers.web.Categories;
 
-import javax.validation.constraints.NotBlank;
-
 public class CategoriesDto {
     private long id;
-    @NotBlank(message = "Category Name is Required")
     private String name;
     private String description;
 

@@ -27,16 +27,16 @@ public class Logins extends Audit {
     @Column(name = "Phone",unique = true,nullable = false)
     private String phone;
 
-    @Column(name = "Email",unique = true,nullable = false,columnDefinition = "TEXT")
+    @Column(name = "Email",unique = true,nullable = false,columnDefinition = "varchar(500)")
     private String email;
 
-    @Column(name = "Avatar",unique = true,nullable = true,columnDefinition = "TEXT")
+    @Column(name = "Avatar",nullable = true,columnDefinition = "TEXT")
     private String avatar;
 
     @Column(name = "UserName",unique = true,nullable = false)
     private String userName;
 
-    @Column(name = "Password",unique = true,nullable = false,columnDefinition = "TEXT")
+    @Column(name = "Password",nullable = false,columnDefinition = "TEXT")
     private String password;
 
     public long getId() {

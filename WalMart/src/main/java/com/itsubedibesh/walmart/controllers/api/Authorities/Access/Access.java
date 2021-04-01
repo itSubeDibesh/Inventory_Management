@@ -11,8 +11,9 @@ public class Access extends Audit {
     public Access() {
     }
 
-    public Access(String name,  AccessEnum createAccess,AccessEnum readAccess, AccessEnum updateAccess, AccessEnum deleteAccess, String description) {
+    public Access(String name, String table, AccessEnum createAccess, AccessEnum readAccess, AccessEnum updateAccess, AccessEnum deleteAccess, String description) {
         this.name = name;
+        this.table = table;
         this.readAccess = readAccess;
         this.createAccess = createAccess;
         this.updateAccess = updateAccess;
@@ -28,6 +29,9 @@ public class Access extends Audit {
 
     @Column(name = "Name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "ScoppedTable", nullable = false)
+    private String table;
 
     @Column(name = "CreateAccess", nullable = false, columnDefinition = "varchar(10) default 'Deny'")
     @Enumerated(EnumType.STRING)
@@ -59,6 +63,14 @@ public class Access extends Audit {
 
     public String getName() {
         return name;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
     }
 
     public void setName(String name) {

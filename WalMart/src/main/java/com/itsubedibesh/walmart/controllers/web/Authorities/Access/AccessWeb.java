@@ -48,7 +48,7 @@ public class AccessWeb {
     @PostMapping(value = "/Add/access",consumes = "application/x-www-form-urlencoded")
     public String createAccessAction(Access access, RedirectAttributes redirectAttributes) {
         try {
-            accessRepo.save(new Access(access.getName(),access.getCreateAccess(),access.getReadAccess(),access.getUpdateAccess(),access.getDeleteAccess(), access.getDescription()));
+            accessRepo.save(new Access(access.getName(),access.getTable(),access.getCreateAccess(),access.getReadAccess(),access.getUpdateAccess(),access.getDeleteAccess(), access.getDescription()));
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Access Added Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
@@ -66,6 +66,7 @@ public class AccessWeb {
         if (accessData.isPresent()) {
             Access _access = accessData.get();
             _access.setName(access.getName());
+            _access.setTable(access.getTable());
             _access.setCreateAccess(access.getCreateAccess());
             _access.setReadAccess(access.getReadAccess());
             _access.setUpdateAccess(access.getUpdateAccess());

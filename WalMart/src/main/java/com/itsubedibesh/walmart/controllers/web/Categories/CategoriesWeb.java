@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -54,7 +53,7 @@ public class CategoriesWeb {
     }
 
     @PostMapping(value = "/Add/category", consumes = "application/x-www-form-urlencoded")
-    public String createCategoryAction(@Valid CategoriesDto categories, RedirectAttributes redirectAttributes) {
+    public String createCategoryAction(CategoriesDto categories, RedirectAttributes redirectAttributes) {
         try {
            categoriesRepo.save(new Categories(categories.getName(), categories.getDescription()));
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
@@ -69,7 +68,7 @@ public class CategoriesWeb {
     }
 
     @PostMapping(value = "/Update/category", consumes = "application/x-www-form-urlencoded")
-    public String updateCategoryAction(@Valid CategoriesDto categories, RedirectAttributes redirectAttributes) {
+    public String updateCategoryAction(CategoriesDto categories, RedirectAttributes redirectAttributes) {
         Optional<Categories> categoryData = categoriesRepo.findById(categories.getId());
         if (categoryData.isPresent()) {
             Categories _category = categoryData.get();
@@ -129,7 +128,7 @@ public class CategoriesWeb {
     }
 
     @PostMapping(value = "/Add/subCategory", consumes = "application/x-www-form-urlencoded")
-    public String createSubCategoryAction(@Valid SubCategoryDto subCategory, RedirectAttributes redirectAttributes) {
+    public String createSubCategoryAction(SubCategoryDto subCategory, RedirectAttributes redirectAttributes) {
         // Fetching Category
         Optional<Categories> categoryData = categoriesRepo.findById(subCategory.getCategoryId());
         Optional<Categories> parentData = categoriesRepo.findById(subCategory.getParentId());
@@ -149,7 +148,7 @@ public class CategoriesWeb {
     }
 
     @PostMapping(value = "/Update/subCategory", consumes = "application/x-www-form-urlencoded")
-    public String updateSubCategoryAction(@Valid SubCategoryDto subCategory, RedirectAttributes redirectAttributes) {
+    public String updateSubCategoryAction(SubCategoryDto subCategory, RedirectAttributes redirectAttributes) {
         Optional<Categories> categoryData = categoriesRepo.findById(subCategory.getCategoryId());
         Optional<Categories> parentData = categoriesRepo.findById(subCategory.getParentId());
         if(categoryData.isPresent()){

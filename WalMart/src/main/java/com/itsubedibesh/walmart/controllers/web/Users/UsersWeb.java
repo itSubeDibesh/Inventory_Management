@@ -56,10 +56,15 @@ public class UsersWeb {
     @PostMapping(value = "/Add/login")
     public String createLoginAction(Logins logins, @RequestParam("image") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
         try {
-            String uploadDir = "src/User_Images/"+logins.getEmail().toLowerCase() ;
-            String avatarName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String uploadDir = "src/User_Images/" + logins.getEmail().toLowerCase();
+            String avatarName;
+            avatarName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            if (avatarName.isEmpty()) {
+                avatarName = null;
+            } else {
+                FileUploader.saveFile(uploadDir, avatarName, multipartFile);
+            }
             loginsRepo.save(new Logins(logins.getPhone(), logins.getEmail(), avatarName, logins.getUserName(), logins.getPassword()));
-            FileUploader.saveFile(uploadDir,avatarName,multipartFile);
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Login Added Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
@@ -70,24 +75,29 @@ public class UsersWeb {
         }
         return "redirect:/users";
     }
+
     @PostMapping(value = "/Update/login")
     public String updateLoginAction(Logins logins, @RequestParam("image") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
         Optional<Logins> loginData = loginsRepo.findById(logins.getId());
-        if(loginData.isPresent()){
-            String uploadDir = "src/User_Images/"+logins.getEmail().toLowerCase() ;
+        if (loginData.isPresent()) {
+            String uploadDir = "src/User_Images/" + logins.getEmail().toLowerCase();
             String avatarName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             Logins _login = loginData.get();
             _login.setUserName(logins.getUserName());
             _login.setPassword(logins.getPassword());
             _login.setPhone(logins.getPhone());
             _login.setEmail(logins.getEmail());
-            _login.setAvatar(avatarName);
+            if (avatarName.isEmpty()) {
+                _login.setAvatar(logins.getAvatar());
+            } else {
+                _login.setAvatar(avatarName);
+                FileUploader.updateFile(uploadDir, logins.getImagePath(), avatarName, multipartFile);
+            }
             loginsRepo.save(_login);
-            FileUploader.updateFile(uploadDir,logins.getImagePath(),avatarName,multipartFile);
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Login Updated Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        }else{
+        } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
             redirectAttributes.addFlashAttribute("noticeMessage", "Login Not Found");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
@@ -98,11 +108,11 @@ public class UsersWeb {
     @GetMapping("/Delete/login/{loginId}")
     public String deleteLogin(@PathVariable long loginId, RedirectAttributes redirectAttributes) {
         Optional<Logins> loginData = loginsRepo.findById(loginId);
-        if(loginData.isPresent()){
+        if (loginData.isPresent()) {
             Logins _login = loginData.get();
             try {
                 loginsRepo.deleteById((long) loginId);
-                FileUploader.deleteDirectory( "src/User_Images/"+_login.getEmail().toLowerCase());
+                FileUploader.deleteDirectory("src/User_Images/" + _login.getEmail().toLowerCase());
                 redirectAttributes.addFlashAttribute("noticeTitle", "Success");
                 redirectAttributes.addFlashAttribute("noticeMessage", "Login Deleted Successfully");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
@@ -111,7 +121,7 @@ public class UsersWeb {
                 redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Login Details");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             }
-        }else{
+        } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
             redirectAttributes.addFlashAttribute("noticeMessage", "Login Not Found");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
