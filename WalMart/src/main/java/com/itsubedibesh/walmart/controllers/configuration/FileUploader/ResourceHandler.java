@@ -12,6 +12,7 @@ public class ResourceHandler  implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         exposeDirectory("src/User_Images", registry);
+        exposeDirectory("src/Product_Images", registry);
     }
 
     private void exposeDirectory(String directoryName, ResourceHandlerRegistry registry) {

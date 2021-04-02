@@ -1,0 +1,135 @@
+{{>layout/bodyHead}}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>{{Action}} Product</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/products/{{Action}}/product" method="post" enctype="multipart/form-data">
+                {{#editProduct.id}}<input type="hidden" id="id" name="id" value="{{editProduct.id}}">{{/editProduct.id}}
+                <!--  Set Form Fields  -->
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Product Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="productName" id="productName"
+                               value="{{#editProduct.productName}}{{editProduct.productName}}{{/editProduct.productName}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Vendor Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="vendorName" id="vendorName"
+                               value="{{#editProduct.vendorName}}{{editProduct.vendorName}}{{/editProduct.vendorName}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Product Category</label>
+                    <div class="col-sm-10">
+                        <select name="categoryId" id="categoryId" class="form-control" required>
+                            <option disabled selected>Select Category</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Avatar</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <input type="file" name="image" id="image" class="dropify form-control"
+                                       data-max-file-size="5M" data-allowed-file-extensions="png jpeg"
+                                       data-show-errors="true">
+                            </div>
+                            {{#editProduct.getImagePath}}
+                                <div class="col-sm-12 col-md-6">
+                                    {{#editProduct.productImage}}<input type="hidden" id="productImage" name="productImage"
+                                                                value="{{editProduct.productImage}}">{{/editProduct.productImage}}
+                                    <span class="mb-4 form-control-static">Previous Image</span>
+                                    <br>
+                                    <a  href="/{{#editProduct.productImage}}{{editProduct.getImagePath}}{{/editProduct.productImage}}{{^editProduct.productImage}}images/defaultProduct.png{{/editProduct.productImage}}" data-lightbox="{{editProduct.productName}}" data-title="{{editProduct.productName}} Images">
+                                        <img src="/{{#editProduct.productImage}}{{editProduct.getImagePath}}{{/editProduct.productImage}}{{^editProduct.productImage}}images/defaultProduct.png{{/editProduct.productImage}}"
+                                             class="mt-4 img-thumbnail img-radius" style="width: 25%;height: auto;"
+                                             alt="{{#editProduct.productName}}{{editProduct.productName}}{{/editProduct.productName}}">
+                                    </a>
+                                </div>
+                            {{/editProduct.getImagePath}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Invoice Number</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="invoiceNumber" id="invoiceNumber"
+                               value="{{#editProduct.invoiceNumber}}{{editProduct.invoiceNumber}}{{/editProduct.invoiceNumber}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Invoice Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" required name="invoiceDate" id="invoiceDate" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Purchased Quantity</label>
+                    <div class="col-sm-10">
+                        <input type="number" required name="purchasedQuantity" id="purchasedQuantity"
+                               value="{{#editProduct.purchasedQuantity}}{{editProduct.purchasedQuantity}}{{/editProduct.purchasedQuantity}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Purchased Price</label>
+                    <div class="col-sm-10">
+                        <input type="number" required name="purchasedPrice" id="purchasedPrice"
+                               value="{{#editProduct.purchasedPrice}}{{editProduct.purchasedPrice}}{{/editProduct.purchasedPrice}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> {{Action}}
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>layout/bodyFooter}}
+<script type="text/javascript" src="/js/common-pages.js"></script>
+<script>
+    const selectedInvoiceDate ={{#editProduct.invoiceDate}}"{{editProduct.invoiceDate}}".split(" ")[0]{{/editProduct.invoiceDate}}{{^editProduct.invoiceDate}}null{{/editProduct.invoiceDate}},
+            invoiceDateId = document.getElementById("invoiceDate"),
+            selectedCategoryId = {{#editProduct.categoryId.id}}{{editProduct.categoryId.id}}{{/editProduct.categoryId.id}}{{^editProduct.categoryId.id}}null{{/editProduct.categoryId.id}},
+            dropDownCategoryId = document.getElementById("categoryId");
+    if (selectedInvoiceDate != null) {
+        invoiceDateId.value = selectedInvoiceDate;
+    }
+    <!--Create Categories List-->
+    fetch("/api/categories")
+            .then(resp => resp.json())
+            .then(response => {
+                response.forEach(category => {
+                    dropDownCategoryId.innerHTML += `<option value="${category.id}" ${selectedCategoryId == category.id ? "selected" : ""}>${category.name}</option>`;
+                });
+            })
+</script>

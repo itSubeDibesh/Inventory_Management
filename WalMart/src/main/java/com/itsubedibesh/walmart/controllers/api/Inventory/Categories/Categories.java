@@ -26,7 +26,7 @@ public class Categories extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "ParentId")
     private Categories parentId;
 
