@@ -27,7 +27,7 @@ public class CategoriesWeb {
     }
 
     @GetMapping("/Update/category/{categoryId}")
-    public String updateCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model,RedirectAttributes redirectAttributes) {
+    public String updateCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model, RedirectAttributes redirectAttributes) {
         // Fetch Data By Category Id
         Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
         if (categoryData.isPresent()) {
@@ -55,7 +55,7 @@ public class CategoriesWeb {
     @PostMapping(value = "/Add/category", consumes = "application/x-www-form-urlencoded")
     public String createCategoryAction(CategoriesDto categories, RedirectAttributes redirectAttributes) {
         try {
-           categoriesRepo.save(new Categories(categories.getName(), categories.getDescription()));
+            categoriesRepo.save(new Categories(categories.getName(), categories.getDescription()));
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Category Added Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
@@ -102,7 +102,7 @@ public class CategoriesWeb {
     }
 
     @GetMapping("/Update/subCategory/{categoryId}")
-    public String updateSubCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model,RedirectAttributes redirectAttributes) {
+    public String updateSubCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model, RedirectAttributes redirectAttributes) {
         // Fetch Data By Category Id
         Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
         if (categoryData.isPresent()) {
@@ -132,13 +132,19 @@ public class CategoriesWeb {
         // Fetching Category
         Optional<Categories> categoryData = categoriesRepo.findById(subCategory.getCategoryId());
         Optional<Categories> parentData = categoriesRepo.findById(subCategory.getParentId());
-        if(categoryData.isPresent()){
-            Categories _category = categoryData.get();
-            _category.setParentId(parentData.get());
-            categoriesRepo.save(_category);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Sub Category Added Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+        if (categoryData.isPresent()) {
+            if (!categoryData.get().equals(parentData.get())) {
+                Categories _category = categoryData.get();
+                _category.setParentId(parentData.get());
+                categoriesRepo.save(_category);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Sub Category Added Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Invalid Combination");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
         } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
             redirectAttributes.addFlashAttribute("noticeMessage", "Something Went Wrong");
@@ -151,13 +157,19 @@ public class CategoriesWeb {
     public String updateSubCategoryAction(SubCategoryDto subCategory, RedirectAttributes redirectAttributes) {
         Optional<Categories> categoryData = categoriesRepo.findById(subCategory.getCategoryId());
         Optional<Categories> parentData = categoriesRepo.findById(subCategory.getParentId());
-        if(categoryData.isPresent()){
-            Categories _category = categoryData.get();
-            _category.setParentId(parentData.get());
-            categoriesRepo.save(_category);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Sub Category Updated Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+        if (categoryData.isPresent()) {
+            if (!categoryData.get().equals(parentData.get())) {
+                Categories _category = categoryData.get();
+                _category.setParentId(parentData.get());
+                categoriesRepo.save(_category);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Sub Category Updated Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Invalid Combination");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
         } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
             redirectAttributes.addFlashAttribute("noticeMessage", "Something Went Wrong");
@@ -169,15 +181,14 @@ public class CategoriesWeb {
     @GetMapping("/Delete/subCategory/{categoryId}")
     public String deleteSubCategory(@PathVariable long categoryId, RedirectAttributes redirectAttributes) {
         Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
-        if(categoryData.isPresent()) {
+        if (categoryData.isPresent()) {
             Categories _category = categoryData.get();
             _category.setParentId(null);
             categoriesRepo.save(_category);
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Sub Category Deleted Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        }
-        else{
+        } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
             redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Sub Category");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
