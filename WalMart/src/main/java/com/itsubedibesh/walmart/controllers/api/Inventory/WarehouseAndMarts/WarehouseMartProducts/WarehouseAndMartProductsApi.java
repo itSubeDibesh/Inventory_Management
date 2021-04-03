@@ -1,4 +1,4 @@
-package com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseAndMart;
+package com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseMartProducts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,20 +12,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class WareHouseAndMartApi {
-
+public class WarehouseAndMartProductsApi {
     @Autowired
-    WarehouseAndMartRepo warehouseAndMartRepo;
+    WarehouseAndMartProductsRepo wAPRepo;
 
-    @GetMapping("/warehouseAndMart")
-    public ResponseEntity<List<WareHouseAndMart>> getAllWareHouseAndMart(){
+    @GetMapping("/WarehouseAndMartProducts")
+    public ResponseEntity<List<WarehouseAndMartProducts>> getAllWarehouseAndMartProducts(){
         try {
-            List<WareHouseAndMart> inventories = new ArrayList<WareHouseAndMart>();
-            warehouseAndMartRepo.findAll().forEach(inventories::add);
-            if (inventories.isEmpty()) {
+            List<WarehouseAndMartProducts> products = new ArrayList<WarehouseAndMartProducts>();
+            wAPRepo.findAll().forEach(products::add);
+            if (products.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(inventories, HttpStatus.OK);
+            return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
