@@ -1,0 +1,98 @@
+{{>layout/bodyHead}}
+<div class="col-md-12 col-lg-12">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Damage And Expiry List</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadDamageAndExpiryList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive" >
+                <div class="text-right mb-2">
+                    <a href="/damage_and_expiry/Add/damage_and_expiry" class="btn btn-primary badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Damage And Expiry</a>
+                </div>
+                <table class="table" id="damageAndExpiryTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Defect Type</th>
+                        <th>Product Name</th>
+                        <th>Invoice Number</th>
+                        <th>Invoice Date</th>
+                        <th>Damaged Quantity</th>
+                        <th>Vendor Name</th>
+                        <th>Vendor Contact</th>
+                        <th>Store Type</th>
+                        <th>Store Name</th>
+                        <th>Store Contact</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="damageAndExpiryDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+{{>layout/dataTable}}
+<script>
+    function formatDate(date){
+        const d= new Date(date);
+        return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+    }
+
+    function setDamageAndExpiryList() {
+        fetch("/api/damageAndExpires")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("damageAndExpiryDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].damageAndExpiryEnum}</td>
+                                            <td>${response[i].productId.productId.productName}</td>
+                                            <td>${response[i].productId.productId.invoiceNumber}</td>
+                                            <td>${formatDate(response[i].productId.productId.invoiceDate)}</td>
+                                            <td>${response[i].quantity}</td>
+                                            <td>${response[i].productId.productId.vendorName}</td>
+                                            <td>${response[i].productId.productId.vendorContact}</td>
+                                            <td>${response[i].productId.wmid.type}</td>
+                                            <td>${response[i].productId.wmid.name}</td>
+                                            <td>${response[i].productId.wmid.contact}</td>
+                                            <td>
+                                                <a href="/damage_and_expiry/Delete/damage_and_expiry/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete Damage And Expiry"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#damageAndExpiryTable').DataTable().destroy()
+                    $('#damageAndExpiryTable').DataTable({
+                        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("damageAndExpiryTable");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="15" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+    setDamageAndExpiryList();
+    document.getElementById("reloadDamageAndExpiryList").addEventListener("click", setDamageAndExpiryList);
+
+</script>

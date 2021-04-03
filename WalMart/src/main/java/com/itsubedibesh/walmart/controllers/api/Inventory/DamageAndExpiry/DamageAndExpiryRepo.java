@@ -1,4 +1,6 @@
 package com.itsubedibesh.walmart.controllers.api.Inventory.DamageAndExpiry;
 
-public interface DamageAndExpiryRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DamageAndExpiryRepo extends JpaRepository<DamageAndExpiry,Long> {
 }

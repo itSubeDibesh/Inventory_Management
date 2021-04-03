@@ -76,7 +76,7 @@
     .then(res=>res.json())
     .then(response=> {
         response.forEach(product=>{
-            dropProductId.innerHTML+=`<option value="${product.id}" ${selectedProductId != null && selectedProductId == product.id ? "selected" : ""}>${product.productName} ${product.vendorName!=""?", Vendor : "+product.vendorName:""} ${product.purchasedPrice!=""?", Cost Price : Rs "+product.purchasedPrice+"/-":""} ${product.purchasedQuantity!=""?", QTY : "+product.purchasedQuantity:""}</option>`;
+            dropProductId.innerHTML+=`<option value="${product.id}" ${selectedProductId != null && selectedProductId == product.id ? "selected" : ""}>${product.productName} ${product.vendorName!=""?", Vendor : "+product.vendorName:""} ${product.purchasedPrice!=""?", Cost Price : Rs "+product.purchasedPrice+"/-":""} ${product.purchasedQuantity!=""?", Purchased QTY : "+product.purchasedQuantity:""}</option>`;
         })
     })
 
