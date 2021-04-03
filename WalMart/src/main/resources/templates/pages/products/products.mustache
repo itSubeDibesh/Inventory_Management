@@ -26,12 +26,54 @@
                         <th>Product Name</th>
                         <th>Category</th>
                         <th>Vendor</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        <th>Purchased Quantity</th>
+                        <th>Cost Price</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody id="productsDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+<div class="col-md-12 col-lg-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Warehouse And Mart Product List</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadWarehouseAndMartProductList"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive" >
+                <div class="text-right mb-2">
+                    <a href="/products/Add/WarehouseAndMartProduct" class="btn btn-primary badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Warehouse And Mart Product</a>
+                </div>
+                <table class="table" id="warehouseAndMartProductTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Store Type</th>
+                        <th>Store</th>
+                        <th>Product Name</th>
+                        <th>Product Category</th>
+                        <th>Available Quantity</th>
+                        <th>Selling </th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="warehouseAndMartProductDataset" class="text-dark">
 
                     </tbody>
                 </table>
@@ -92,4 +134,55 @@
     }
     setProductsList();
     document.getElementById("reloadProductsList").addEventListener("click", setProductsList);
+
+    function setWarehouseAndMartProduct() {
+        fetch("/api/WarehouseAndMartProducts")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("warehouseAndMartProductDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].wmid.type}</td>
+                                            <td>${response[i].wmid.name}</td>
+                                            <td>${response[i].productId.productName}</td>
+                                            <td>${response[i].productId.categoryId.name}</td>
+                                            <td>${response[i].availableQuantity}</td>
+                                            <td>Rs ${response[i].sellingPrice}/-</td>
+                                            <td>
+                                                <a href="/products/Update/WarehouseAndMartProduct/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit Product"><i class="fas fa-edit"></i></a>
+                                                <a href="/products/Delete/WarehouseAndMartProduct/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete Product"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#warehouseAndMartProductTable').DataTable().destroy()
+                    $('#warehouseAndMartProductTable').DataTable({
+                        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true,
+                        drawCallback: function (e) {
+                            var t = this.api(),
+                                    l = t.rows({
+                                        page: "current"
+                                    }).nodes(),
+                                    c = null;
+                            t.column(2, {
+                                page: "current"
+                            }).data().each(function (e, t) {
+                                c !== e && ($(l).eq(t).before('<tr class="bg-primary text-light"><td colspan="8">' + e + "'s Products" + "</td></tr>"), c = e)
+                            })
+                        }
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("warehouseAndMartProductTable");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="8" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+    setWarehouseAndMartProduct();
+    document.getElementById("reloadWarehouseAndMartProductList").addEventListener("click", setWarehouseAndMartProduct);
 </script>

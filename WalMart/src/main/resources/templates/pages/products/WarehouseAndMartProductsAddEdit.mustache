@@ -1,0 +1,90 @@
+{{>layout/bodyHead}}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>{{Action}} Warehouse And Mart Product</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/products/{{Action}}/WarehouseAndMartProduct" method="post">
+                {{#editWAMProduct.id}}
+                    <input type="hidden" id="id" name="id" value="{{editWAMProduct.id}}">{{/editWAMProduct.id}}
+                <!--  Set Form Fields  -->
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Warehouse And Mart</label>
+                    <div class="col-sm-10">
+                        <select name="WMId" id="WMId" class="form-control" required>
+                            <option disabled selected>Select Warehouse And Mart</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Product</label>
+                    <div class="col-sm-10">
+                        <select name="ProductId" id="ProductId" class="form-control" required>
+                            <option disabled selected>Select Product</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Available Quantity</label>
+                    <div class="col-sm-10">
+                        <input type="number" required name="availableQuantity" id="availableQuantity"
+                               value="{{#editWAMProduct.availableQuantity}}{{editWAMProduct.availableQuantity}}{{/editWAMProduct.availableQuantity}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Selling Price</label>
+                    <div class="col-sm-10">
+                        <input type="number" required name="sellingPrice" id="sellingPrice"
+                               value="{{#editWAMProduct.sellingPrice}}{{editWAMProduct.sellingPrice}}{{/editWAMProduct.sellingPrice}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> {{Action}}
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>layout/bodyFooter}}
+<script type="text/javascript" src="/js/common-pages.js"></script>
+<script>
+    const selectedWMId = {{#editWAMProduct.WMId.id}}{{editWAMProduct.WMId.id}}{{/editWAMProduct.WMId.id}}{{^editWAMProduct.WMId.id}}null{{/editWAMProduct.WMId.id}},
+            dropWMId = document.getElementById("WMId"),
+    selectedProductId= {{#editWAMProduct.ProductId.id}}{{editWAMProduct.ProductId.id}}{{/editWAMProduct.ProductId.id}}{{^editWAMProduct.ProductId.id}}null{{/editWAMProduct.ProductId.id}},
+            dropProductId = document.getElementById("ProductId");
+    fetch("/api/products")
+    .then(res=>res.json())
+    .then(response=> {
+        response.forEach(product=>{
+            dropProductId.innerHTML+=`<option value="${product.id}" ${selectedProductId != null && selectedProductId == product.id ? "selected" : ""}>${product.productName} ${product.vendorName!=""?", Vendor : "+product.vendorName:""} ${product.purchasedPrice!=""?", Cost Price : Rs "+product.purchasedPrice+"/-":""} ${product.purchasedQuantity!=""?", QTY : "+product.purchasedQuantity:""}</option>`;
+        })
+    })
+
+    fetch("/api/warehouseAndMart")
+    .then(res=>res.json())
+    .then(response=>{
+        response.forEach(mart=>{
+            dropWMId.innerHTML+=`<option value="${mart.id}" ${selectedWMId != null && selectedWMId == mart.id ? "selected" : ""}>${mart.name} ${mart.address!=""?", Address : "+mart.address:""}  ${mart.contact!=""?", Contact : "+mart.contact:""}</option>`;
+        })
+    })
+</script>
