@@ -1,10 +1,7 @@
 package com.itsubedibesh.walmart.controllers.web.Members.Customers;
 
-import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Logins.Logins;
-import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Users.Users;
 import com.itsubedibesh.walmart.controllers.api.Members.Customers.Customers;
 import com.itsubedibesh.walmart.controllers.api.Members.Customers.CustomersRepo;
-import com.itsubedibesh.walmart.controllers.web.Administartion.Users.Users.UsersDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(name = "customers")
+@RequestMapping("/customers")
 public class CustomersWeb {
 
     @Autowired

@@ -1,0 +1,67 @@
+{{>layout/bodyHead}}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>{{Action}} Customers</h5>
+            <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/customers/{{Action}}/customer" method="post">
+                {{#editCustomer.id}}<input type="hidden" id="id" name="id" value="{{editCustomer.id}}">{{/editCustomer.id}}
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Full Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="fullName" id="fullName"
+                               value="{{#editCustomer.fullName}}{{editCustomer.fullName}}{{/editCustomer.fullName}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Address</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="address" id="address"
+                               value="{{#editCustomer.fullName}}{{editCustomer.fullName}}{{/editCustomer.fullName}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">TPIN</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="tpin" id="tpin"
+                               value="{{#editCustomer.tpin}}{{editCustomer.tpin}}{{/editCustomer.tpin}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Contact Number</label>
+                    <div class="col-sm-10">
+                        <input type="tel" required name="contactNumber" id="contactNumber"
+                               value="{{#editCustomer.contactNumber}}{{editCustomer.contactNumber}}{{/editCustomer.contactNumber}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> {{Action}}
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{>layout/bodyFooter}}
+<script type="text/javascript" src="/js/common-pages.js"></script>
