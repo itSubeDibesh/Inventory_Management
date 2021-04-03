@@ -14,10 +14,11 @@ public class Products extends Audit {
     public Products() {
     }
 
-    public Products(Categories categoryId, String productName, String vendorName, String productImage, String invoiceNumber, Date invoiceDate, Double purchasedQuantity, Double purchasedPrice) {
+    public Products(Categories categoryId, String productName, String vendorName, String vendorContact, String productImage, String invoiceNumber, Date invoiceDate, Double purchasedQuantity, Double purchasedPrice) {
         this.categoryId = categoryId;
         this.productName = productName;
         this.vendorName = vendorName;
+        this.vendorContact = vendorContact;
         this.productImage = productImage;
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
@@ -39,6 +40,9 @@ public class Products extends Audit {
 
     @Column(name = "VendorName", nullable = false)
     private String vendorName;
+
+    @Column(name = "VendorContact", nullable = false,columnDefinition = "varchar(20)")
+    private String vendorContact;
 
     @Column(name = "productImage", columnDefinition = "TEXT")
     private String productImage;
@@ -86,6 +90,14 @@ public class Products extends Audit {
 
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
+    }
+
+    public String getVendorContact() {
+        return vendorContact;
+    }
+
+    public void setVendorContact(String vendorContact) {
+        this.vendorContact = vendorContact;
     }
 
     public String getProductImage() {

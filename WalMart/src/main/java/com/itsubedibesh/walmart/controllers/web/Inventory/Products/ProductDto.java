@@ -9,10 +9,11 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(long categoryId, String productName, String vendorName, String productImage, String invoiceNumber, Date invoiceDate, Double purchasedQuantity, Double purchasedPrice) {
+    public ProductDto(long categoryId, String productName, String vendorName, String vendorContact, String productImage, String invoiceNumber, Date invoiceDate, Double purchasedQuantity, Double purchasedPrice) {
         this.categoryId = categoryId;
         this.productName = productName;
         this.vendorName = vendorName;
+        this.vendorContact = vendorContact;
         this.productImage = productImage;
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
@@ -24,6 +25,7 @@ public class ProductDto {
     private long categoryId;
     private String productName;
     private String vendorName;
+    private String vendorContact;
     private String productImage;
     private String invoiceNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -61,6 +63,14 @@ public class ProductDto {
 
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
+    }
+
+    public String getVendorContact() {
+        return vendorContact;
+    }
+
+    public void setVendorContact(String vendorContact) {
+        this.vendorContact = vendorContact;
     }
 
     public String getProductImage() {

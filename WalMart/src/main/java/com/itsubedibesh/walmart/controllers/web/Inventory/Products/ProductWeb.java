@@ -64,7 +64,7 @@ public class ProductWeb {
             String imageName;
             imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             Optional<Categories> categoryId = categoriesRepo.findById(products.getCategoryId());
-            productsRepo.save(new Products(categoryId.get(),products.getProductName(),products.getVendorName(),imageName,products.getInvoiceNumber(),products.getInvoiceDate(),products.getPurchasedQuantity(),products.getPurchasedPrice()));
+            productsRepo.save(new Products(categoryId.get(),products.getProductName(),products.getVendorName(),products.getVendorContact(),imageName,products.getInvoiceNumber(),products.getInvoiceDate(),products.getPurchasedQuantity(),products.getPurchasedPrice()));
             if (imageName.isEmpty()) {
                 imageName = null;
             } else {
@@ -92,6 +92,7 @@ public class ProductWeb {
             _products.setCategoryId(categoryId.get());
             _products.setProductName(products.getProductName());
             _products.setVendorName(products.getVendorName());
+            _products.setVendorContact(products.getVendorContact());
             _products.setInvoiceNumber(products.getInvoiceNumber());
             _products.setInvoiceDate(products.getInvoiceDate());
             _products.setPurchasedPrice(products.getPurchasedPrice());
