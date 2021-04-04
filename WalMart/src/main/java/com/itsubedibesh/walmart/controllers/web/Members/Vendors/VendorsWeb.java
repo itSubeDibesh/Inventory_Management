@@ -1,4 +1,4 @@
-package com.itsubedibesh.walmart.controllers.web.Members.Customers;
+package com.itsubedibesh.walmart.controllers.web.Members.Vendors;
 
 import com.itsubedibesh.walmart.controllers.api.Inventory.Products.Products;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Products.ProductsRepo;

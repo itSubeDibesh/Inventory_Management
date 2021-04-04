@@ -10,4 +10,6 @@ public interface ProductsRepo extends JpaRepository<Products,Long> {
     List<Products> findAllGroupByVendorName();
 
     List<Products> findAllByVendorName(String vendorName);
+
 }
+

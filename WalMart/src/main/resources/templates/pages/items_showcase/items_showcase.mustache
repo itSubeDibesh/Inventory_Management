@@ -1,0 +1,60 @@
+{{>layout/bodyHead}}
+<div class="card-deck">
+    <div class="row" id="infiniteDataSet">
+    </div>
+    <div class="row d-none" id="infiniteDataSetNoDataFound" >
+        <div class="col-sm-12 col-md-12 col-lg-12">
+           <div class="card text-center">
+               <h3 class="text-center">No more Data Found!! 😔😔</h3>
+           </div>
+        </div>
+    </div>
+</div>
+{{>layout/bodyFooter}}
+<script>
+    let pageNumber = 1;
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            ++pageNumber;
+            fetchData(pageNumber);
+        }
+    });
+    function fetchData(pageNo = 0, pageSize = 10) {
+        const infiniteDiv = document.getElementById("infiniteDataSet"),
+                infiniteNoDiv = document.getElementById("infiniteDataSetNoDataFound");
+        fetch("/api/products/paginate?pageNo=" + pageNo + "&pageSize=" + pageSize)
+                .then(resp => resp.json())
+                .then(response => {
+                    if (response.length != 0) {
+                        infiniteNoDiv.classList.replace('d-block', 'd-none');
+                        for (let i = 0; i < response.length; i++) {
+                            infiniteDiv.innerHTML += `<div class="col-sm-12 col-md-6 col-lg-3 mt-2 mb-2">
+                            <div class="card">
+                                <a href="/${response[i].productId.productImage != '' ? response[i].productId.imagePath : "images/defaultProduct.png"}" data-lightbox="${response[i].productId.productName}" data-title="${response[i].productId.productName}'s Images">
+                                    <img src="/${response[i].productId.productImage != '' ? response[i].productId.imagePath : "images/defaultProduct.png"}"
+                                         class="card-img-top"
+                                         alt="${response[i].productId.productName}'s Images">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">Product Name : ${response[i].productId.productName}</h5>
+                                    <div class="row">
+                                        <div class="col-12">Category : ${response[i].productId.categoryId.name}</div>
+                                        <div class="col-12">Available Quantity : <span>${response[i].availableQuantity}</span></div>
+                                        <div class="col-12">Selling Price : Rs <span>${response[i].sellingPrice}</span>/-</div>
+                                        <div class="col-12">${response[i].wmid.type}'s Name : ${response[i].wmid.name}</div>
+                                        <div class="col-12">${response[i].wmid.type}'s Contact : ${response[i].wmid.contact} </div>
+                                        <div class="col-12">${response[i].wmid.type}'s Address : ${response[i].wmid.address}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                        }
+                    } else
+                        infiniteNoDiv.classList.replace('d-none', 'd-block');
+                })
+                .catch(error => {
+                    if (error) infiniteNoDiv.classList.replace('d-none', 'd-block');
+                })
+    }
+    fetchData();
+</script>
