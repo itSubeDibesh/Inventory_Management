@@ -1,4 +1,5 @@
 {{>layout/header}}
+<script type="text/javascript" src="/js/application/session/sessionFilesHandler.js"></script>
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
@@ -42,8 +43,10 @@
                         </li>
                         <li class="user-profile header-notification">
                             <a href="#!" class="waves-effect waves-light">
-                                <img src="/images/defaultUser.png" class="img-radius" alt="User-Profile-Image">
-                                <span>Dibesh Raj Subedi</span>
+                                <span id="LoggedInUserAvatar">
+
+                                </span>
+                                <span class="text-capitalize LoggedInUserName"></span>
                                 <i class="ti-angle-down"></i>
                             </a>
                             <ul class="show-notification profile-notification">
@@ -53,7 +56,7 @@
                                     </a>
                                 </li>
                                 <li class="waves-effect waves-light">
-                                    <a href="auth-normal-sign-in.html">
+                                    <a href="/logout" onclick="javascript:handleLogout()">
                                         <i class="ti-layout-sidebar-left"></i> Logout
                                     </a>
                                 </li>
@@ -246,7 +249,7 @@
                                 <div class="col-md-8">
                                     <div class="page-header-title">
                                         <h5 class="m-b-10">{{#Action}}{{Action}}{{/Action}} {{PageTitle}}</h5>
-                                        <p class="m-b-0">Welcome to Inventory Management, Dibesh Raj Subedi !!</p>
+                                        <p class="m-b-0">Welcome to Inventory Management, <span class="LoggedInUserName"></span> !!</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

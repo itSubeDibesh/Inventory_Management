@@ -1,3 +1,13 @@
 {{>layout/bodyHead}}
-
 {{>layout/bodyFooter}}
+<script>
+    const UserData = {
+    id:{{#LoginDetails.id}}"{{LoginDetails.id}}"{{/LoginDetails.id}}{{^LoginDetails.id}}null{{/LoginDetails.id}},
+    phone:{{#LoginDetails.phone}}"{{LoginDetails.phone}}"{{/LoginDetails.phone}}{{^LoginDetails.phone}}null{{/LoginDetails.phone}},
+    email:{{#LoginDetails.email}}"{{LoginDetails.email}}"{{/LoginDetails.email}}{{^LoginDetails.email}}null{{/LoginDetails.email}},
+    avatar:{{#LoginDetails.avatar}}"{{LoginDetails.avatar}}"{{/LoginDetails.avatar}}{{^LoginDetails.avatar}}null{{/LoginDetails.avatar}},
+    getImagePath:{{#LoginDetails.getImagePath}}"{{LoginDetails.getImagePath}}"{{/LoginDetails.getImagePath}}{{^LoginDetails.getImagePath}}null{{/LoginDetails.getImagePath}},
+    userName:{{#LoginDetails.userName}}"{{LoginDetails.userName}}"{{/LoginDetails.userName}}{{^LoginDetails.userName}}null{{/LoginDetails.userName}},
+    };
+</script>
+<script type="text/javascript" src="/js/application/session/sessionInitializer.js"></script>
