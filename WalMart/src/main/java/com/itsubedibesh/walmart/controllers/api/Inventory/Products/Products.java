@@ -35,7 +35,7 @@ public class Products extends Audit {
     @JoinColumn(name = "CategoryId",nullable = false)
     private Categories categoryId;
 
-    @Column(name = "ProductName", nullable = false, unique = true)
+    @Column(name = "ProductName", nullable = false)
     private String productName;
 
     @Column(name = "VendorName", nullable = false)
@@ -47,7 +47,7 @@ public class Products extends Audit {
     @Column(name = "productImage", columnDefinition = "TEXT")
     private String productImage;
 
-    @Column(name = "invoiceNumber", nullable = false,unique = true)
+    @Column(name = "invoiceNumber", nullable = false)
     private String invoiceNumber;
 
     @Column(name = "invoiceDate", nullable = false,columnDefinition = "Date")
