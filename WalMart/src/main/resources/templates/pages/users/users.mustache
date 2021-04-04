@@ -84,14 +84,16 @@
 {{>layout/bodyFooter}}
 {{>layout/dataTable}}
 <script>
-    function setLoginsList() {
-        fetch("/api/logins")
-                .then(res => res.json())
-                .then(response => {
-                    const TableData = document.getElementById("loginsDataset");
-                    let TableDataset = '';
-                    for (let i = 0; i < response.length; i++) {
-                        TableDataset += `<tr>
+    addEventListener('DOMContentLoaded', () => {
+        function setLoginsList() {
+            fetch("/api/logins")
+                    .then(res => res.json())
+                    .then(response => {
+                        const TableData = document.getElementById("loginsDataset");
+                        let TableDataset = '';
+                        for (let i = 0; i < response.length; i++) {
+                            if (response[i].id != sessionKey.id) {
+                                TableDataset += `<tr>
                                             <td>${i + 1}</td>
                                             <td>${response[i].userName}</td>
                                             <td><a href="mailto:${response[i].email}">${response[i].email}</a></td>
@@ -100,33 +102,35 @@
                                             <td class="text-center"><a href="/users/Update/login/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit {{PageTitle}} Login"><i class="fas fa-edit"></i></a></td>
                                             <td class="text-center"><a href="/users/Delete/login/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete {{PageTitle}} Login"><i class="fas fa-trash"></i></a></td>
                                         </tr>`;
-                    }
-                    TableData.innerHTML = null;
-                    TableData.innerHTML += TableDataset;
-                    $('#loginsTable').DataTable({
-                        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-                        retrieve: true,
-                        destroy: true,
-                        responsive: true
-                    });
-                }).catch(err => {
-            const TableData = document.getElementById("loginsTable");
-            TableData.innerHTML = null;
-            TableData.innerHTML += `<tr><td colspan="7" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
-        })
-    }
+                            }
+                        }
+                        TableData.innerHTML = null;
+                        TableData.innerHTML += TableDataset;
+                        $('#loginsTable').DataTable({
+                            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                            retrieve: true,
+                            destroy: true,
+                            responsive: true
+                        });
+                    }).catch(err => {
+                const TableData = document.getElementById("loginsTable");
+                TableData.innerHTML = null;
+                TableData.innerHTML += `<tr><td colspan="7" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+            })
+        }
 
-    setLoginsList();
-    document.getElementById("reloadLoginList").addEventListener("click", setLoginsList);
+        setLoginsList();
+        document.getElementById("reloadLoginList").addEventListener("click", setLoginsList);
 
-    function setUsersList() {
-        fetch("/api/users")
-                .then(res => res.json())
-                .then(response => {
-                    const TableData = document.getElementById("usersDataset");
-                    let TableDataset = '';
-                    for (let i = 0; i < response.length; i++) {
-                        TableDataset += `<tr>
+        function setUsersList() {
+            fetch("/api/users")
+                    .then(res => res.json())
+                    .then(response => {
+                        const TableData = document.getElementById("usersDataset");
+                        let TableDataset = '';
+                        for (let i = 0; i < response.length; i++) {
+                            if (response[i].loginId.id != sessionKey.id) {
+                                TableDataset += `<tr>
                                             <td>${i + 1}</td>
                                             <td>${response[i].fullName}</td>
                                             <td>${response[i].loginId.userName}</td>
@@ -135,23 +139,25 @@
                                             <td class="text-center"><a href="/users/Update/user/${response[i].id}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="Edit {{PageTitle}} Login"><i class="fas fa-edit"></i></a></td>
                                             <td class="text-center"><a href="/users/Delete/user/${response[i].id}" class="btn btn-danger btn-md badge badge-pill text-center" data-toggle="tooltip" data-placement="left" title="Delete {{PageTitle}} Login"><i class="fas fa-trash"></i></a></td>
                                         </tr>`;
-                    }
-                    TableData.innerHTML = null;
-                    TableData.innerHTML += TableDataset;
-                    $('#usersTable').DataTable({
-                        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-                        retrieve: true,
-                        destroy: true,
-                        responsive: true
-                    })
-                }).catch(err => {
-            const TableData = document.getElementById("usersTable");
-            TableData.innerHTML = null;
-            TableData.innerHTML += `<tr><td colspan="7" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
-        })
-    }
+                            }
+                        }
+                        TableData.innerHTML = null;
+                        TableData.innerHTML += TableDataset;
+                        $('#usersTable').DataTable({
+                            lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                            retrieve: true,
+                            destroy: true,
+                            responsive: true
+                        })
+                    }).catch(err => {
+                const TableData = document.getElementById("usersTable");
+                TableData.innerHTML = null;
+                TableData.innerHTML += `<tr><td colspan="7" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+            })
+        }
 
-    setUsersList();
-    document.getElementById("reloadUserList").addEventListener("click", setUsersList);
+        setUsersList();
+        document.getElementById("reloadUserList").addEventListener("click", setUsersList);
 
+    })
 </script>

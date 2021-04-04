@@ -95,19 +95,21 @@
             selectedGender ={{#editUser.gender}}"{{editUser.gender}}"{{/editUser.gender}}{{^editUser.gender}}null{{/editUser.gender}},
             selectedDob ={{#editUser.dob}}"{{editUser.dob}}".split(" ")[0]{{/editUser.dob}}{{^editUser.dob}}null{{/editUser.dob}},
             loginId = document.getElementById("loginId"),
-            dobId= document.getElementById("dob");
+            dobId = document.getElementById("dob");
     gender.forEach(item => {
         genderId.innerHTML += `<option value="${item}" ${selectedGender != null && selectedGender == item ? "selected" : ""}>${item}</option>`;
     });
-    if (selectedDob!=null){
-        dobId.value=selectedDob;
+    if (selectedDob != null) {
+        dobId.value = selectedDob;
     }
 
     fetch("/api/logins")
             .then(res => res.json())
             .then(response => {
-                response.forEach(login=>{
-                    loginId.innerHTML+=`<option value="${login.id}" ${selectedLogin != null && selectedLogin == login.id ? "selected" : ""}>${login.userName} ${login.email!=""?" - "+login.email:""}</option>`;
+                response.forEach(login => {
+                    if (login.id != sessionKey.id) {
+                        loginId.innerHTML += `<option value="${login.id}" ${selectedLogin != null && selectedLogin == login.id ? "selected" : ""}>${login.userName} ${login.email != "" ? " - " + login.email : ""}</option>`;
+                    }
                 });
             })
 </script>

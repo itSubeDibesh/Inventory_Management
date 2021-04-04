@@ -21,21 +21,25 @@
                     {{/editLoginRole.id}}
                     <div class="col-sm-10">
                         {{#editLoginRole.id}}
-                         <div class="row">
-                             <div class="col-md-6">
-                                 <input type="text" id="userName" name="userName" disabled value="{{editLoginRole.loginId.userName}}">
-                                 <input type="hidden" id="loginId" name="loginId" value="{{editLoginRole.loginId.id}}">
-                             </div>
-                             <div class="col-md-6">
-                                 {{#editLoginRole.loginId.getImagePath}}
-                                     <a  href="/{{#editLoginRole.loginId.avatar}}{{editLoginRole.loginId.getImagePath}}{{/editLoginRole.loginId.avatar}}{{^editLoginRole.loginId.avatar}}images/defaultUser.png{{/editLoginRole.loginId.avatar}}" data-lightbox="{{editLoginRole.loginId.userName}}" data-title="{{editLoginRole.loginId.userName}}'s Avatar">
-                                         <img src="/{{#editLoginRole.loginId.avatar}}{{editLoginRole.loginId.getImagePath}}{{/editLoginRole.loginId.avatar}}{{^editLoginRole.loginId.avatar}}images/defaultUser.png{{/editLoginRole.loginId.avatar}}"
-                                              class="mt-4 img-thumbnail img-radius" style="width: 25%;height: auto;"
-                                              alt="{{#editLoginRole.loginId.userName}}{{editLoginRole.loginId.userName}}{{/editLoginRole.loginId.userName}}">
-                                     </a>
-                                 {{/editLoginRole.loginId.getImagePath}}
-                             </div>
-                         </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" id="userName" name="userName" disabled
+                                           value="{{editLoginRole.loginId.userName}}">
+                                    <input type="hidden" id="loginId" name="loginId"
+                                           value="{{editLoginRole.loginId.id}}">
+                                </div>
+                                <div class="col-md-6">
+                                    {{#editLoginRole.loginId.getImagePath}}
+                                        <a href="/{{#editLoginRole.loginId.avatar}}{{editLoginRole.loginId.getImagePath}}{{/editLoginRole.loginId.avatar}}{{^editLoginRole.loginId.avatar}}images/defaultUser.png{{/editLoginRole.loginId.avatar}}"
+                                           data-lightbox="{{editLoginRole.loginId.userName}}"
+                                           data-title="{{editLoginRole.loginId.userName}}'s Avatar">
+                                            <img src="/{{#editLoginRole.loginId.avatar}}{{editLoginRole.loginId.getImagePath}}{{/editLoginRole.loginId.avatar}}{{^editLoginRole.loginId.avatar}}images/defaultUser.png{{/editLoginRole.loginId.avatar}}"
+                                                 class="mt-4 img-thumbnail img-radius" style="width: 25%;height: auto;"
+                                                 alt="{{#editLoginRole.loginId.userName}}{{editLoginRole.loginId.userName}}{{/editLoginRole.loginId.userName}}">
+                                        </a>
+                                    {{/editLoginRole.loginId.getImagePath}}
+                                </div>
+                            </div>
                         {{/editLoginRole.id}}
 
                         {{^editLoginRole.id}}
@@ -75,7 +79,9 @@
                 .then(response => {
                     const loginId = document.getElementById("loginId");
                     response.forEach(login => {
-                        loginId.innerHTML += `<option value="${login.id}" ${loginData != null && loginData == login.userName ? "selected" : ""}>${login.userName}${login.email != "" ? " - " + login.email : ""}</option>`;
+                        if (login.userName != sessionKey.userName) {
+                            loginId.innerHTML += `<option value="${login.id}" ${loginData != null && loginData == login.userName ? "selected" : ""}>${login.userName}${login.email != "" ? " - " + login.email : ""}</option>`;
+                        }
                     })
                 })
         {{/editLoginRole.id}}
