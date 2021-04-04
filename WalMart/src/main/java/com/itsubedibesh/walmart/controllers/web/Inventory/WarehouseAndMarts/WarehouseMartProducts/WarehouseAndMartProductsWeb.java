@@ -103,7 +103,7 @@ public class WarehouseAndMartProductsWeb {
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting User Details");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Warehouse And Mart Product Details");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
         }
         return "redirect:/products";

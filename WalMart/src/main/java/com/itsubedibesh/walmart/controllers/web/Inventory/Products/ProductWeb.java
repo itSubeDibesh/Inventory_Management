@@ -125,16 +125,16 @@ public class ProductWeb {
                 FileUploader.deleteFile(_products.getImagePath());
                 productsRepo.deleteById(productId);
                 redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-                redirectAttributes.addFlashAttribute("noticeMessage", "Login Deleted Successfully");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Product Deleted Successfully");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-                redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Login Details");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Product Details");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             }
         } else {
             redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Login Not Found");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Product Not Found");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
         }
         return "redirect:/products";
