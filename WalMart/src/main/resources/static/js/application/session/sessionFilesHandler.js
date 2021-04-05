@@ -8,12 +8,17 @@ const Session = window.sessionStorage,
         userName: Session.getItem("userName")
     };
 
-addEventListener('DOMContentLoaded', () => {
-    // Add Image
+function setUserDetails(){
+    // Reloads If No Key is Found
+    if (sessionKey.id==null)
+        location.reload()
+  // Add Image
     document.getElementById("LoggedInUserAvatar").innerHTML += `<img class="img-radius" src="/${sessionKey.avatar != null ? sessionKey.getImagePath : "images/defaultUser.png"}" alt="${sessionKey.userName != null ? sessionKey.userName : "User-Image"}" >`;
 // Add Name
     const names = document.getElementsByClassName("LoggedInUserName");
     for (let i = 0; i < names.length; i++) {
         names[i].innerHTML += sessionKey.userName;
     }
-});
+}
+
+addEventListener('load', setUserDetails);
