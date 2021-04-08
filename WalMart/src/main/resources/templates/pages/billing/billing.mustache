@@ -1,0 +1,42 @@
+{{>layout/bodyHead}}
+<div class="col-md-12 col-lg-12">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Sales Bills</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                    <li><a id="reloadSalesBills"><i class="fa fa-refresh reload-card"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive" >
+                <div class="text-right mb-2">
+                    <a href="/billing/Add/bill" class="btn btn-primary badge badge-pill"><i
+                            class="fas fa-plus"></i> Add Sales Bill</a>
+                </div>
+                <table class="table" id="salesBillsTable">
+                    <thead class="bg-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="salesBillsDataset" class="text-dark">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}

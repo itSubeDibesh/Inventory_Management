@@ -83,5 +83,4 @@ Briefing out the requirements, we will be creating application which would store
 customers and sales made to customer. The Analyzed requirements clears up the basic infrastructure of application
 although the core visualization of project needs a workflow and further techinical documentations as follows:
 
-1. [Data Dictionary](./Data_Dictionary.md)
 1. [Database Implementation](./Database_Implementation.md)

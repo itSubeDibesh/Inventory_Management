@@ -131,7 +131,19 @@
                         "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
                         retrieve: true,
                         destroy: true,
-                        responsive: true
+                        responsive: true,
+                        drawCallback: function (e) {
+                            var t = this.api(),
+                                    l = t.rows({
+                                        page: "current"
+                                    }).nodes(),
+                                    c = null;
+                            t.column(1, {
+                                page: "current"
+                            }).data().each(function (e, t) {
+                                c !== e && ($(l).eq(t).before('<tr class="bg-primary text-light"><td colspan="5">' + e + "'s List" + "</td></tr>"), c = e)
+                            })
+                        }
                     });
                 }).catch(err => {
             const TableData = document.getElementById("subCategoriesDataset");

@@ -2,10 +2,10 @@
 <div class="card-deck">
     <div class="row" id="infiniteDataSet">
     </div>
-    <div class="row d-none" id="infiniteDataSetNoDataFound" >
+    <div class="row d-none container" id="infiniteDataSetNoDataFound" >
         <div class="col-sm-12 col-md-12 col-lg-12">
            <div class="card text-center">
-               <h3 class="text-center">No more Data Found!! 😔😔</h3>
+               <h3 class="text-center">Products data not found!! 😔😔</h3>
            </div>
         </div>
     </div>
@@ -54,6 +54,7 @@
                 })
                 .catch(error => {
                     if (error) infiniteNoDiv.classList.replace('d-none', 'd-block');
+                    window.location.href = "/dashboard";
                 })
     }
     fetchData();

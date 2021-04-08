@@ -1,5 +1,7 @@
 package com.itsubedibesh.walmart.controllers.api.Administartion.Users.Users;
 
+import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Logins.Logins;
+import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Logins.LoginsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class UsersApi {
 
     @Autowired
     UsersRepo usersRepo;
+
+    @Autowired
+    LoginsRepo loginsRepo;
 
     @GetMapping("/users")
     public ResponseEntity<List<Users>> getAllUsers() {
@@ -41,6 +46,20 @@ public class UsersApi {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(userData.get(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/users/byLogin/{loginId}")
+    public ResponseEntity<Users> getUserByLoginId(@PathVariable long loginId) {
+        try {
+            Optional<Logins> loginsData = loginsRepo.findById(loginId);
+            Optional<Users> userLoggedInData = usersRepo.findByLoginId(loginsData.get());
+            if (!userLoggedInData.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(userLoggedInData.get(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
