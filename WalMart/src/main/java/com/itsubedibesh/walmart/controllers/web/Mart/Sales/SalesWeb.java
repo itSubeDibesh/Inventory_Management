@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.text.DateFormat;
@@ -35,6 +36,15 @@ public class SalesWeb {
         model.addAttribute("newInvoiceNumber", func.GetNewInvoiceNumber());
         model.addAttribute("todayDate", format.format(date));
         return "/pages/billing/billingAddEdit";
+    }
+
+    @GetMapping("/View/{invoiceNumber}")
+    public String viewBillingPage(@PathVariable() String invoiceNumber, final Model model){
+        model.addAttribute("PageTitle", "Sales Bill");
+        model.addAttribute("Action", "View");
+        model.addAttribute("BaseLink", "billing");
+        model.addAttribute("invoiceNumber",invoiceNumber);
+        return "/pages/billing/billingView";
     }
 
 }

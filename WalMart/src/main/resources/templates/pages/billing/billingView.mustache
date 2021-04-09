@@ -1,0 +1,247 @@
+{{>layout/bodyHead}}
+<div class="col-md-12 col-lg-12">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Sales Bills</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <div class="text-right mb-2">
+                    <button class="btn btn-primary badge badge-pill" type="button" onclick="printDiv('printDiv')"><i
+                            class="fas fa-print"></i>Print
+                    </button>
+                </div>
+                <div id="printDiv">
+                    <div class="p-2 mt-2 border">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <id>Date : <span id="invoiceDate"></span></id>
+                                            <br>
+                                            <id>Invoice Number : <span id="invoiceNumber"></span></id>
+                                            <br>
+                                            <id><span class="typeWm"></span> Name : <span id="nameWM"></span></id>
+                                            <br>
+                                            <id><span class="typeWm"></span> Address : <span id="addressWm"></span></id>
+                                            <br>
+                                            <id><span class="typeWm"></span> Contact : <span id="contactWm"></span></id>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <id>Customer's Name : <span id="customerName"></span></id>
+                                            <br>
+                                            <id>Customer's TPIN : <span id="customerTPIN"></span></id>
+                                            <br>
+                                            <id>Customer's Address : <span id="customerAddress"></span></id>
+                                            <br>
+                                            <id>Customer's Contact : <span id="customerContact"></span></id>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <img class="img-fluid" style="width: 50%; height: auto;"
+                                         src="/images/icons/blackWalmart.png"
+                                         alt="Logo"/>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>Bill Item's</h4>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-light">
+                                        <thead class="bg-light text-dark">
+                                        <tr class="text-center">
+                                            <th>S.N</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Amount</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="text-dark" id="salesDataset">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <id>Taxable Amount : <span id="taxableAmount"></span></id>
+                                    <br>
+                                    <id>13% Vat Amount : <span id="vatAmount"></span></id>
+                                    <br>
+                                    <id>Grand Total : <span id="grandTotal"></span></id>
+                                    <br>
+                                    <id>Amount's Received : <span id="amountReceived"></span></id>
+                                    <br>
+                                    <id>Amount's Returned : <span id="amountReturned"></span></id>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6 text-left">
+                                            <id>Auctioned By : <span id="soldBy"></span></id>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <id>Bill Generated Date : <span id="generatedDate"></span></id>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+<script>
+
+    /**
+     * Print SelectedDiv
+     * */
+    function printDiv(divName) {
+        let printContents = document.getElementById(divName);
+        let popupWin = window.open('', '_blank', 'width=auto,height=auto');
+        popupWin.document.open();
+        popupWin.document.write(`
+            <html>
+               <head>
+                    <link rel="icon" href="/images/icons/inventory.ico" type="image/x-icon">
+                    <link rel="stylesheet" type="text/css" href="/font/icofont/css/icofont.css">
+                    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+                    <link rel="stylesheet" href="/pages/waves/css/waves.min.css" type="text/css" media="all">
+                    <link rel="stylesheet" type="text/css" href="/font/themify-icons/themify-icons.css">
+                    <link rel="stylesheet" type="text/css" href="/css/font-awesome-n.min.css">
+                    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+                    <link rel="stylesheet" type="text/css" href="/css/style.css">
+               </head>
+               <body onload="window.print()">
+                    ${printContents.innerHTML}
+               </body>
+            </html>
+        `);
+        popupWin.document.close();
+    }
+
+    function formatDate(date) {
+        const d = new Date(date);
+        return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    }
+
+    function SetStaticData(initialResponse, taxableAmount) {
+        const invoiceDate = document.getElementById("invoiceDate"),
+                invoiceNumber = document.getElementById("invoiceNumber"),
+                nameWM = document.getElementById("nameWM"),
+                addressWm = document.getElementById("addressWm"),
+                contactWm = document.getElementById("contactWm"),
+                typeWm = document.getElementsByClassName("typeWm");
+        const customerName = document.getElementById("customerName"),
+                customerTPIN = document.getElementById("customerTPIN"),
+                customerAddress = document.getElementById("customerAddress"),
+                customerContact = document.getElementById("customerContact");
+        const taxableAmountId = document.getElementById("taxableAmount"),
+                vatAmount = document.getElementById("vatAmount"),
+                grandTotal = document.getElementById("grandTotal"),
+                amountReceived = document.getElementById("amountReceived"),
+                amountReturned = document.getElementById("amountReturned");
+
+        const soldBy = document.getElementById("soldBy"),
+                generatedDate = document.getElementById("generatedDate");
+
+
+        // Loop to add Market Type
+        for (let i = 0; i < typeWm.length; i++) {
+            const mart = typeWm[i];
+            mart.innerHTML += initialResponse.productId.wmid.type;
+        }
+
+        // Set Date
+        invoiceDate.innerHTML += formatDate(initialResponse.invoiceDate);
+        // Set invoiceNumber
+        invoiceNumber.innerHTML += initialResponse.invoiceNumber;
+        // Set nameWM
+        nameWM.innerHTML += initialResponse.productId.wmid.name;
+        // Set addressWm
+        addressWm.innerHTML += initialResponse.productId.wmid.address;
+        // Set contactWm
+        contactWm.innerHTML += initialResponse.productId.wmid.contact;
+
+        // Set customerName
+        customerName.innerHTML += initialResponse.customerId.fullName;
+        // Set customerTPIN
+        customerTPIN.innerHTML += initialResponse.customerId.tpin;
+        // Set customerAddress
+        customerAddress.innerHTML += initialResponse.customerId.address;
+        // Set customerContact
+        customerContact.innerHTML += initialResponse.customerId.contactNumber;
+
+        // Set taxableAmountId
+        taxableAmountId.innerHTML += `Rs ${taxableAmount}/-`;
+        // Set vatAmount
+        vatAmount.innerHTML += `Rs ${initialResponse.taxAmount}/-`;
+        // Set grandTotal
+        grandTotal.innerHTML += `Rs ${parseFloat(taxableAmount + initialResponse.taxAmount)}/-`;
+        // Set amountReceived
+        amountReceived.innerHTML += `Rs ${initialResponse.receivedAmount}/-`;
+        // Set amountReturned
+        amountReturned.innerHTML += `Rs ${initialResponse.returnedAmount}/-`;
+
+        // Set soldBy
+        soldBy.innerHTML += initialResponse.userId.fullName;
+        // Set generatedDate
+        generatedDate.innerHTML += formatDate(new Date());
+    }
+
+    function SetDynamicData(response) {
+        // Bill Items
+        const salesDataset = document.getElementById("salesDataset");
+        let taxableAmount = 0;
+        for (let i = 0; i < response.length; i++) {
+            const item = response[i];
+            const total = parseFloat(item.productId.sellingPrice) * parseFloat(item.quantity);
+            taxableAmount += total;
+            salesDataset.innerHTML += `
+                    <tr class="text-center">
+                        <td>${i + 1}</td>
+                        <td>${item.productId.productId.productName}</td>
+                        <td>${item.quantity}</td>
+                        <td>Rs ${item.productId.sellingPrice}/-</td>
+                        <td>Rs ${total}/-</td>
+                    </tr>
+            `;
+        }
+
+        // Set Dynamic Dataset
+        SetStaticData(response[0], taxableAmount);
+    }
+
+    /**
+     * Fetch Data Set
+     **/
+    fetch(`/api/sales/{{invoiceNumber}}`)
+            .then(res => res.json())
+            .then(response => SetDynamicData(response))
+            .catch(err => window.location.href = `/redirect/Error/${err}/bg-danger/billing`);
+</script>

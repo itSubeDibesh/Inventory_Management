@@ -27,7 +27,7 @@ public class CategoriesWeb {
     }
 
     @GetMapping("/Update/category/{categoryId}")
-    public String updateCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model, RedirectAttributes redirectAttributes) {
+    public String updateCategoryViewPage(@PathVariable() long categoryId, final Model model, RedirectAttributes redirectAttributes) {
         // Fetch Data By Category Id
         Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
         if (categoryData.isPresent()) {
