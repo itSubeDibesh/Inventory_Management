@@ -5,8 +5,18 @@ const Session = window.sessionStorage,
         email: Session.getItem("email"),
         avatar: Session.getItem("avatar"),
         getImagePath: Session.getItem("getImagePath"),
-        userName: Session.getItem("userName")
+        userName: Session.getItem("userName"),
+        user_id: Session.getItem("user_id"),
+        user_contactNumber: Session.getItem("user_contactNumber"),
+        user_loginId: Session.getItem("user_loginId"),
+        user_address: Session.getItem("user_address"),
+        user_address: Session.getItem("user_address"),
+        user_gender: Session.getItem("user_gender"),
+        user_fullName: Session.getItem("user_fullName"),
+        user_dob: Session.getItem("user_dob"),
+        user_tpin: Session.getItem("user_tpin"),
     };
+
 
 function setUserDetails() {
     // Reloads If No Key is Found

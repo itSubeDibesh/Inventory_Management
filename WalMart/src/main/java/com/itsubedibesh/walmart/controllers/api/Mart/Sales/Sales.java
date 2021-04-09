@@ -2,6 +2,7 @@ package com.itsubedibesh.walmart.controllers.api.Mart.Sales;
 
 import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Users.Users;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Products.Products;
+import com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseMartProducts.WarehouseAndMartProducts;
 import com.itsubedibesh.walmart.controllers.api.Members.Customers.Customers;
 import com.itsubedibesh.walmart.controllers.configuration.Audit.Audit;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,22 @@ import java.util.Date;
 @Table(name = "Sales")
 @Entity
 public class Sales extends Audit {
+
+    public Sales() {
+    }
+
+    public Sales(String invoiceNumber, Date invoiceDate, WarehouseAndMartProducts productId, Customers customerId, Users userId, Double quantity, Double taxAmount, Double returnedAmount, Double receivedAmount) {
+        this.invoiceNumber = invoiceNumber;
+        this.invoiceDate = invoiceDate;
+        this.productId = productId;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.quantity = quantity;
+        this.taxAmount = taxAmount;
+        this.returnedAmount = returnedAmount;
+        this.receivedAmount = receivedAmount;
+    }
+
     @Id
     @Column(name = "SalesId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +43,7 @@ public class Sales extends Audit {
 
     @ManyToOne(cascade =  CascadeType.DETACH,optional = false)
     @JoinColumn(name = "ProductId",nullable = false)
-    private Products productId;
+    private WarehouseAndMartProducts productId;
 
     @ManyToOne(cascade =  CascadeType.DETACH,optional = false)
     @JoinColumn(name = "CustomerId",nullable = false)
@@ -38,6 +55,9 @@ public class Sales extends Audit {
 
     @Column(name = "Quantity", nullable = false)
     private Double quantity;
+
+    @Column(name = "taxAmount", nullable = false)
+    private Double taxAmount;
 
     @Column(name = "ReturnedAmount", nullable = false)
     private Double returnedAmount;
@@ -69,11 +89,11 @@ public class Sales extends Audit {
         this.invoiceDate = invoiceDate;
     }
 
-    public Products getProductId() {
+    public WarehouseAndMartProducts getProductId() {
         return productId;
     }
 
-    public void setProductId(Products productId) {
+    public void setProductId(WarehouseAndMartProducts productId) {
         this.productId = productId;
     }
 
@@ -99,6 +119,14 @@ public class Sales extends Audit {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public Double getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(Double taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
     public Double getReturnedAmount() {

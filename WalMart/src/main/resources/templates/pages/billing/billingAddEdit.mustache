@@ -31,7 +31,7 @@
                     <label class="col-sm-2 col-form-label">Select Customer Details</label>
                     <div class="col-sm-10">
                         <select name="customerId" id="customerId" class="form-control" required>
-                            <option selected disabled>Select a customer</option>
+                            <option disabled>Select a customer</option>
                         </select>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Grand Total</label>
+                    <label class="col-sm-2 col-form-label">Taxable Amount</label>
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-sm-10">
@@ -85,11 +85,50 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">13% Vat Amount</label>
+                    <div class="col-sm-10">
+                        <input type="number" disabled name="taxAmount" id="taxAmount" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Grand Total</label>
+                    <div class="col-sm-10">
+                        <input type="number" disabled name="grandTotal" id="grandTotal" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Amount Received</label>
+                    <div class="col-sm-10">
+                        <input type="number" name="received" required id="received" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Return Amount</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input type="number" disabled name="return" id="return" class="form-control">
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary" type="button" id="calculateReturn"><i
+                                        class="fas fa-calculator"></i> Calculate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group row">
                     <div class="col-md-12 text-center">
                         <button class="btn btn-success m-2" type="button" id="submitSalesBill"><i
                                 class="fas fa-edit"></i> Save
+                        </button>
+                        <button onclick="resetAll()" class="btn btn-danger m-2" type="reset"><i
+                                class="fas fa-redo"></i> Clear
                         </button>
                     </div>
                 </div>
@@ -103,6 +142,10 @@
     let carts = [];
     let products = [];
     let totalSum = 0;
+    let taxAmount = 0;
+    let returnAmount = 0;
+    let receivedAmount = 0;
+    let grandTotal = 0;
 
     const submitButton = document.getElementById("submitSalesBill");
     const customerId = document.getElementById("customerId");
@@ -114,6 +157,10 @@
     const cardBody = document.getElementById("cartsDataset");
 
     const calculateResult = document.getElementById("calculateResult");
+    const calculateReturn = document.getElementById("calculateReturn");
+
+    const receivedAmountId = document.getElementById("received");
+    const returnedAmountId = document.getElementById("return");
 
     /**
      * Appends Card to Dom
@@ -154,7 +201,7 @@
             document.getElementById("default").selected = "true";
             appendCard();
             calculateTotal();
-        }
+        } else notify("Error", "Invalid Quantity Entered", null, "bg-danger")
     }
 
     /**
@@ -195,26 +242,143 @@
     }
 
     /**
+     * Reset All Items
+     * */
+    function resetAll() {
+        cardBody.innerHTML = null;
+        document.getElementById("default").selected = "true";
+        document.getElementById("total").value = null;
+        document.getElementById("taxAmount").value = null;
+        document.getElementById("received").value = null;
+        document.getElementById("grandTotal").value = null;
+        document.getElementById("return").value = null;
+        carts = [];
+        totalSum = 0;
+        returnAmount = 0;
+        receivedAmount = 0;
+        taxAmount = 0;
+        grandTotal = 0;
+    }
+
+    /**
      * Calculates Total
      * */
-    function calculateTotal(){
+    function calculateTotal() {
         const total = document.getElementById("total")
         total.value = null;
-        totalSum=0;
+        totalSum = 0;
         if (carts.length != 0) {
             carts.forEach(cart => totalSum += cart.total);
             total.value = totalSum;
+            getTaxAmount();
         }
     }
+
     calculateResult.addEventListener("click", calculateTotal);
+
+    /**
+     * Calculate Taxable Amount
+     * */
+    function getTaxAmount() {
+        const vatPercentage = 0.13;
+        taxAmount = 0;
+        grandTotal = 0;
+        taxAmount = vatPercentage * totalSum;
+        grandTotal = totalSum + taxAmount;
+        document.getElementById("taxAmount").value = taxAmount;
+        document.getElementById("grandTotal").value = grandTotal;
+    }
+
+    /***
+     * Calculate Returned Amount
+     * */
+    function calculateReturnValue() {
+        returnAmount = 0;
+        receivedAmount = 0;
+        if (receivedAmountId.value != null && receivedAmountId.value > 0) {
+            receivedAmount = parseFloat(receivedAmountId.value);
+            returnAmount = Math.abs(receivedAmount - grandTotal);
+            returnedAmountId.value = returnAmount;
+        }
+    }
+
+    calculateReturn.addEventListener("click", calculateReturnValue);
+
+    /**
+     * Validate Form Submit
+     * */
+    function validateFormEntry() {
+        const dataset = [];
+
+        if (customerId.value == null)
+            dataset.push({
+                status: false,
+                missing: "Customer Details"
+            })
+
+        if (carts.length == 0)
+            dataset.push({
+                status: false,
+                missing: "Products"
+            })
+
+        if (receivedAmount == 0 || receivedAmount == null)
+            dataset.push({
+                status: false,
+                missing: "Amount Received"
+            })
+
+        if (returnAmount == null)
+            dataset.push({
+                status: false,
+                missing: "Return Amount Not Calculated"
+            })
+        return dataset;
+    }
 
 
     /**
      * Submitted Triggered
      * */
-    submitButton.addEventListener("click", () => {
-        alert("Submitted")
-    })
+    function submitData() {
+        const validation = validateFormEntry();
+        if (validation.length == 0) {
+            let payLoad = [];
+            //    invoiceDate, productId, customerId, userId, quantity taxAmount, receivedAmount, returnedAmount
+            // Casting Payload
+            carts.forEach(item => {
+                payLoad.push({
+                    invoiceNumber: "{{newInvoiceNumber}}",
+                    invoiceDate: new Date(),
+                    productId: parseInt(item.productId.id),
+                    customerId: parseInt(customerId.value),
+                    userId: parseInt(sessionKey.user_id),
+                    quantity: parseFloat(item.quantity),
+                    taxAmount,
+                    receivedAmount,
+                    returnedAmount: returnAmount || 0
+                })
+            });
+            // Defining Dataset And Payload
+            fetch("/api/sales/bills", {
+                headers: {"content-type": "application/json; charset=UTF-8"},
+                body: JSON.stringify(payLoad),
+                method: "POST"
+            }).then(res => res.json())
+                    .then(response => {
+                        if (response.success)
+                            window.location.href = `/redirect/Success/Bills Saved Successfully/bg-success/billing`;
+                        else
+                            window.location.href = `/redirect/Error/Problem Saving Bills/bg-danger/billing`;
+                    })
+                    .catch(err => window.location.href = `/redirect/Error/${err}/bg-danger/billing`);
+        } else
+            validation.forEach(item => {
+                notify("Missing", item.missing, null, "bg-danger")
+            })
+    }
+
+    submitButton.addEventListener("click", submitData);
 
     /**
      * Fetch Customer
@@ -222,7 +386,7 @@
     fetch("/api/customers")
             .then(res => res.json())
             .then(response => {
-                if (response.length != 0) response.forEach(customer => customerId.innerHTML += `<option value="${customer.id}">${customer.fullName} - ${customer.contactNumber} , ${customer.address} [${customer.tpin}] </option>`)
+                if (response.length != 0) response.forEach(customer => customerId.innerHTML += `<option value="${customer.id}">${customer.tpin} , ${customer.address} [${customer.fullName} - ${customer.contactNumber}] </option>`)
             })
 
     /**

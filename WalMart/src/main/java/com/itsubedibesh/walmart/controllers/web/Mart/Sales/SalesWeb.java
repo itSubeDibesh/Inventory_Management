@@ -19,7 +19,7 @@ public class SalesWeb {
     SalesRepo salesRepo;
 
     @GetMapping()
-    public String billingViewPage(final Model model){
+    public String billingViewPage(final Model model) {
         model.addAttribute("PageTitle", "Sales Billing");
         return "/pages/billing/billing";
     }
@@ -28,14 +28,13 @@ public class SalesWeb {
     public String createBillViewPage(final Model model) {
         SalesFunctions func = new SalesFunctions(salesRepo);
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date date= new Date();
+        Date date = new Date();
         model.addAttribute("PageTitle", "Sales Bill");
         model.addAttribute("Action", "Add");
         model.addAttribute("BaseLink", "billing");
-        model.addAttribute("newInvoiceNumber",func.GetNewInvoiceNumber());
-        model.addAttribute("todayDate",format.format(date));
+        model.addAttribute("newInvoiceNumber", func.GetNewInvoiceNumber());
+        model.addAttribute("todayDate", format.format(date));
         return "/pages/billing/billingAddEdit";
     }
-
 
 }

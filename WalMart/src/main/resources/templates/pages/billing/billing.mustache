@@ -23,15 +23,15 @@
                     <thead class="bg-dark text-light">
                     <tr>
                         <th>#</th>
-                        <th>Type</th>
-                        <th>Name</th>
-                        <th>Contact</th>
-                        <th>Address</th>
+                        <th>Customer Name</th>
+                        <th>Customer TPIN</th>
+                        <th>Invoice Number</th>
+                        <th>Invoice Date</th>
+                        <th>Sold By</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody id="salesBillsDataset" class="text-dark">
-
                     </tbody>
                 </table>
             </div>
@@ -40,3 +40,48 @@
     <!-- Inverse table card end -->
 </div>
 {{>layout/bodyFooter}}
+{{>layout/dataTable}}
+<script>
+    function formatDate(date){
+        const d= new Date(date);
+        return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+    }
+
+    function setSalesBills() {
+        fetch("/api/sales/OrderList")
+                .then(res => res.json())
+                .then(response => {
+                    const TableData = document.getElementById("salesBillsDataset");
+                    let TableDataset = '';
+                    for (let i = 0; i < response.length; i++) {
+                        TableDataset += `<tr>
+                                            <td>${i + 1}</td>
+                                            <td>${response[i].customerId.fullName}</td>
+                                            <td>${response[i].customerId.tpin}</td>
+                                            <td>${response[i].invoiceNumber}</td>
+                                            <td>${formatDate(response[i].invoiceDate)}</td>
+                                            <td>${response[i].userId.fullName}</td>
+                                            <td>
+                                                <a href="/billing/View/${response[i].invoiceNumber}" class="btn btn-primary btn-md badge badge-pill text-center"  data-toggle="tooltip" data-placement="left" title="View Bill"><i class="fas fa-eye"></i></a>
+                                            </td>
+                                        </tr>`;
+                    }
+                    TableData.innerHTML = null;
+                    TableData.innerHTML += TableDataset;
+                    $('#salesBillsTable').DataTable().destroy()
+                    $('#salesBillsTable').DataTable({
+                        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                        retrieve: true,
+                        destroy: true,
+                        responsive: true,
+                    });
+                }).catch(err => {
+            const TableData = document.getElementById("salesBillsTable");
+            TableData.innerHTML = null;
+            TableData.innerHTML += `<tr><td colspan="7" class="text-dark text-center"><h4>Data Not Found!</h4></td></tr>`;
+        })
+    }
+    setSalesBills();
+    document.getElementById("reloadSalesBills").addEventListener("click", setSalesBills);
+
+</script>

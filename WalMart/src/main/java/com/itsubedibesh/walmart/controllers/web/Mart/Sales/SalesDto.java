@@ -8,7 +8,7 @@ public class SalesDto {
     public SalesDto() {
     }
 
-    public SalesDto(Date invoiceDate, long productId, long customerId, long userId, Double quantity, Double receivedAmount, Double returnedAmount) {
+    public SalesDto(Date invoiceDate, long productId, long customerId, long userId, Double quantity,Double taxAmount, Double receivedAmount, Double returnedAmount) {
         this.invoiceDate = invoiceDate;
         this.productId = productId;
         this.customerId = customerId;
@@ -26,6 +26,7 @@ public class SalesDto {
     private long customerId;
     private long userId;
     private Double quantity;
+    private Double taxAmount;
     private Double receivedAmount;
     private Double returnedAmount;
 
@@ -55,6 +56,14 @@ public class SalesDto {
 
     public long getProductId() {
         return productId;
+    }
+
+    public Double getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(Double taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
     public void setProductId(long productId) {
