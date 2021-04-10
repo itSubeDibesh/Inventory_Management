@@ -1,0 +1,171 @@
+{{>layout/bodyHead}}
+<div class="col-md-12 col-lg-12">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Transfer Products</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Product</label>
+                    <div class="col-sm-10">
+                        <select name="product" id="product" class="form-control" required>
+                            <option disabled>Select Product</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Receiver Warehouse / Mart</label>
+                    <div class="col-sm-10">
+                        <select name="warehouseMartReceiver" id="warehouseMartReceiver" class="form-control" required>
+                            <option disabled>Select Receiver Type</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Quantity</label>
+                    <div class="col-sm-10">
+                        <input type="number" required name="quantity" id="quantity" class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="button" id="submit"><i class="fas fa-send"></i>
+                            Transfer
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i
+                                class="fas fa-trash"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+<script>
+    const receiver = document.getElementById("warehouseMartReceiver"),
+            submit = document.getElementById("submit"),
+            productID = document.getElementById("product");
+    let productCopy = [],
+            martCopy = [];
+    fetch("/api/warehouseAndMart")
+            .then(res => res.json())
+            .then(response => {
+                martCopy = response;
+                response.forEach(mart => {
+                    receiver.innerHTML += `<option value="${mart.id}">${mart.type} Name : ${mart.name} ${mart.address != "" ? ", Address : " + mart.address : ""}  ${mart.contact != "" ? ", Contact : " + mart.contact : ""}</option>`;
+                })
+            })
+
+    fetch("/api/WarehouseAndMartProducts")
+            .then(res => res.json())
+            .then(response => {
+                productCopy = response;
+                response.forEach(product => {
+                    productID.innerHTML += `<option value="${product.id}" >${product.productId.productName} ${product.productId.vendorName != "" ? ", Vendor : " + product.productId.vendorName : ""} ${product.productId.purchasedPrice != "" ? ", Cost Price : Rs " + product.productId.purchasedPrice + "/-" : ""} ${product.productId.purchasedQuantity != "" ? ", Purchased QTY : " + product.productId.purchasedQuantity : ""} ${product.availableQuantity != "" ? ", Available QTY : " + product.availableQuantity : ""}, ${product.wmid.type} Name : ${product.wmid.name} </option>`;
+                })
+            })
+
+    /**
+     * Validates Form Submission
+     **/
+    function validateQuantity() {
+        const quantity = document.getElementById("quantity");
+        let dataset = [];
+
+        if (quantity.value != "") {
+            if (receiver.value != "") {
+                productCopy.forEach(item => {
+                    if (item.id == productID.value) {
+                        if (quantity.value >= item.availableQuantity)
+                            dataset.push({
+                                title: "Invalid Quantity",
+                                message: "Quantity Must be Less than available quantity!"
+                            })
+
+                        if (receiver.value == item.wmid.id)
+                            dataset.push({
+                                title: "Similar Warehouse / Mart",
+                                message: "Select Different Warehouse / Mart or Product!"
+                            })
+                    }
+                })
+            } else dataset.push({title: "Receiver Missing", message: "Receiver Warehouse / Mart Required!"})
+        } else dataset.push({title: "Quantity Missing", message: "Quantity Required!"})
+
+        if (receiver.value == "")
+            dataset.push({title: "Receiver Missing", message: "Receiver Warehouse / Mart Required!"})
+
+        if (productID.value == "")
+            dataset.push({title: "Product Missing", message: "Product Required!"})
+
+        return dataset;
+    }
+
+    function findProductMartById(id, type = "Product") {
+        if (type == 'Product') {
+            for (let i = 0; i < productCopy.length; i++) {
+                const product = productCopy[i];
+                if (product.id == id)
+                    return product;
+            }
+        } else if (type == "Mart") {
+            for (let i = 0; i < martCopy.length; i++) {
+                const mart = martCopy[i];
+                if (mart.id == id)
+                    return mart;
+            }
+        }
+    }
+
+    /**
+     * Submits The Form to /products_management/transfer
+     **/
+    function submitFunction() {
+        const validation = validateQuantity();
+        if (validation.length == 0) {
+            const sendingDetails = findProductMartById(parseInt(productID.value)),
+                    sendingMart = sendingDetails.wmid,
+                    sendingProduct = sendingDetails.productId,
+                    receivingMart = findProductMartById(parseInt(receiver.value), "Mart"),
+                    quantity = parseFloat(document.getElementById("quantity").value);
+            let payload = {
+                sendingMart,
+                sendingProduct,
+                receivingMart,
+                quantity,
+            }
+            fetch("/api/WarehouseAndMartProducts/transfer", {
+                headers: {"content-type": "application/json; charset=UTF-8"},
+                body: JSON.stringify(payload),
+                method: "POST"
+            }).then(res => res.json())
+                    .then(response => {
+                        if (response.success)
+                            window.location.href = `/redirect/Success/Product Transfer Success/bg-success/products_management`;
+                        else
+                            window.location.href = `/redirect/Error/Problem Transferring Products/bg-danger/products_management`;
+                    })
+                    .catch(err => window.location.href = `/redirect/Error/${err}/bg-danger/products_management`);
+        } else
+            validation.forEach(err => notify(err.title, err.message, null, "bg-danger"))
+    }
+    submit.addEventListener("click", submitFunction);
+
+</script>
