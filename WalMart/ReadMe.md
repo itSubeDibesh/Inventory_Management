@@ -1,1 +1,0 @@
-# Walmart [![time tracker](https://wakatime.com/badge/github/itSubeDibesh/Inventory_Management.svg)](https://wakatime.com/badge/github/itSubeDibesh/Inventory_Management)

@@ -40,6 +40,21 @@ Now Lets Setup Database in __MySqlWorkbench__ by following the steps below.
 1. Select Apply on prompt and Finish.
 1. Now Run the Project and Database Will Be created automatically using `Spring Data JPA`.
 
+`Note :` __To Have a Working Database Connected with project You need to configure database name on application.properties.__
+
+You can find [application.properties](../WalMart/src/main/resources/application.properties) on `WalMart\src\main\resources`.
+
+````
+#Configuring Datasource, JPA, Hibernate
+spring.datasource.url= jdbc:mysql://localhost:3306/walmart?useSSL=false
+spring.datasource.username= walmart
+spring.datasource.password= password
+````
+Change `spring.datasource.username` and `spring.datasource.password` to your user name and password form __MySqlWorkbench__ instance.
+
+## Database Models
+Every Database Models are located inside individual [API controller](../WalMart/src/main/java/com/itsubedibesh/walmart/controllers/api) directory.
+
 ## Database Schema Reverse Enginered
 
 If you Follow Workbench Reverse Enginering then you will get [model](./Assets/Schema/Model/Inventory_Management.mwb) which will give ER-Diagram as output of your schema as

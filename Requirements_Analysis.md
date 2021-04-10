@@ -59,25 +59,20 @@ to client requirements we must create an inventory application with following re
     1. Create, update, delete and list users
     1. User roles and permission
     1. User login and access management
-    1. ___User Analysis___ should be implemented
 1. __Products__
     1. Create, update, delete and list products
     1. Implement product categories and sub-categories
     1. Purchase and salse sources of products also should be maintained
-    1. ___Products Anslysis___ should also be maintained
 1. __Warehouse__
     1. Create, update, delete and list warehouse
     1. Transfure product from one ware house to other
     1. Revoke the damaged and expired items
-    1. ___Warehouse Analysis___ should be implemented
 1. __Customers__
     1. Create, update, delete and list customers
     1. Implement __TPIN number__ of the customer ___(PAN number)___
-    1. ___Customers Analysis___ aslo should be implemented
 1. __Sales__
     1. Products should be salable by users to customers
     1. Receipts and sales history should be maintain
-    1. ___Sales Analysis___ aslo should be maintained
 
 Briefing out the requirements, we will be creating application which would store details of users, products, warehouses,
 customers and sales made to customer. The Analyzed requirements clears up the basic infrastructure of application
