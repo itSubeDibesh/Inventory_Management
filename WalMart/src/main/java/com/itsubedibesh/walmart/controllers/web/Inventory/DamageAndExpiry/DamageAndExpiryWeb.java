@@ -27,67 +27,91 @@ public class DamageAndExpiryWeb {
     WarehouseAndMartProductsRepo warehouseAndMartProductsRepo;
 
     @GetMapping()
-    public String damageAndExpiryViewPage(final Model model, HttpSession session) {
+    public String damageAndExpiryViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Damage And Expires");
             return "pages/damage_and_expiry/damage_and_expiry";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Add/damage_and_expiry")
-    public String createDamageAndExpiryPage(final Model model, HttpSession session) {
+    public String createDamageAndExpiryPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Damage And Expiry");
             model.addAttribute("Action", "Add");
             model.addAttribute("BaseLink", "damage_and_expiry");
             return "pages/damage_and_expiry/damage_and_expiryAddEdit";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @PostMapping(value = "/Add/damage_and_expiry")
-    public String createDamageAndExpiryAction(DamageAndExpiryDto DamageAndExpiryDataSet, RedirectAttributes redirectAttributes) {
-        try {
-            Optional<WarehouseAndMartProducts> productId = warehouseAndMartProductsRepo.findById(DamageAndExpiryDataSet.getProductId());
-            // Update Quantity Value in Warehouse and Mart Product Table
-            if (productId.isPresent()) {
-                WarehouseAndMartProducts _products = productId.get();
-                _products.setAvailableQuantity(_products.getAvailableQuantity() - DamageAndExpiryDataSet.getQuantity());
-                warehouseAndMartProductsRepo.save(_products);
-                // Add entry to Database
-                damageAndExpiryRepo.save(new DamageAndExpiry(_products, DamageAndExpiryDataSet.getDamageAndExpiryEnum(), DamageAndExpiryDataSet.getQuantity()));
-                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-                redirectAttributes.addFlashAttribute("noticeMessage", "Damage And Expiry Added Successfully");
-                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+    public String createDamageAndExpiryAction(DamageAndExpiryDto DamageAndExpiryDataSet, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            try {
+                Optional<WarehouseAndMartProducts> productId = warehouseAndMartProductsRepo.findById(DamageAndExpiryDataSet.getProductId());
+                // Update Quantity Value in Warehouse and Mart Product Table
+                if (productId.isPresent()) {
+                    WarehouseAndMartProducts _products = productId.get();
+                    _products.setAvailableQuantity(_products.getAvailableQuantity() - DamageAndExpiryDataSet.getQuantity());
+                    warehouseAndMartProductsRepo.save(_products);
+                    // Add entry to Database
+                    damageAndExpiryRepo.save(new DamageAndExpiry(_products, DamageAndExpiryDataSet.getDamageAndExpiryEnum(), DamageAndExpiryDataSet.getQuantity()));
+                    redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                    redirectAttributes.addFlashAttribute("noticeMessage", "Damage And Expiry Added Successfully");
+                    redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
 
-            } else {
+                } else {
+                    redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                    redirectAttributes.addFlashAttribute("noticeMessage", "Damage And Expiry Details Not Found");
+                    redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+                }
+            } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-                redirectAttributes.addFlashAttribute("noticeMessage", "Damage And Expiry Details Not Found");
+                redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
+            return "redirect:/damage_and_expiry";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/damage_and_expiry";
     }
 
     @GetMapping("/Delete/damage_and_expiry/{DamageAndExpiryId}")
-    public String deleteDamageAndExpiry(@PathVariable Long DamageAndExpiryId, RedirectAttributes redirectAttributes) {
-        try {
-            damageAndExpiryRepo.deleteById(DamageAndExpiryId);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Damage And Expiry Deleted Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Damage And Expiry Details");
+    public String deleteDamageAndExpiry(@PathVariable Long DamageAndExpiryId, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            try {
+                damageAndExpiryRepo.deleteById(DamageAndExpiryId);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Damage And Expiry Deleted Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Damage And Expiry Details");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/damage_and_expiry";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/damage_and_expiry";
     }
 }

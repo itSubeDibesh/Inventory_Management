@@ -21,13 +21,17 @@ public class VendorsWeb {
     ProductsRepo productsRepo;
 
     @GetMapping()
-    public String productsViewPage(final Model model, HttpSession session) {
+    public String productsViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Vendors");
             return "pages/vendors/vendors";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/products/{vendorId}")
@@ -47,8 +51,12 @@ public class VendorsWeb {
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
                 return "redirect:/vendors";
             }
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
 }

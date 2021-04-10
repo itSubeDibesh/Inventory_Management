@@ -23,25 +23,33 @@ public class CustomersWeb {
     CustomersRepo customersRepo;
 
     @GetMapping()
-    public String customersViewPage(final Model model, HttpSession session) {
+    public String customersViewPage(final Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Customers");
             return "pages/customers/customers";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Add/customer")
-    public String createCustomersViewPage(final Model model, HttpSession session) {
+    public String createCustomersViewPage(final Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Customers");
             model.addAttribute("Action", "Add");
             model.addAttribute("BaseLink", "customers");
             return "pages/customers/customersAddEdit";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Update/customer/{customerId}")
@@ -61,58 +69,86 @@ public class CustomersWeb {
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
                 return "redirect:/customers";
             }
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @PostMapping(value = "/Add/customer")
-    public String createCustomersAction(Customers customers, RedirectAttributes redirectAttributes) {
-        try {
-            customersRepo.save(new Customers(customers.getTpin(), customers.getFullName(), customers.getAddress(), customers.getContactNumber()));
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Customers Added Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
+    public String createCustomersAction(Customers customers, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            try {
+                customersRepo.save(new Customers(customers.getTpin(), customers.getFullName(), customers.getAddress(), customers.getContactNumber()));
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Customers Added Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/customers";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/customers";
     }
 
     @PostMapping(value = "/Update/customer")
-    public String updateCustomersAction(Customers customers, RedirectAttributes redirectAttributes) {
-        Optional<Customers> customerData = customersRepo.findById(customers.getId());
-        if (customerData.isPresent()) {
-            Customers _costumers = customerData.get();
-            _costumers.setTpin(customers.getTpin());
-            _costumers.setFullName(customers.getFullName());
-            _costumers.setAddress(customers.getAddress());
-            _costumers.setContactNumber(customers.getContactNumber());
-            customersRepo.save(_costumers);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Customers Updated Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+    public String updateCustomersAction(Customers customers, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            Optional<Customers> customerData = customersRepo.findById(customers.getId());
+            if (customerData.isPresent()) {
+                Customers _costumers = customerData.get();
+                _costumers.setTpin(customers.getTpin());
+                _costumers.setFullName(customers.getFullName());
+                _costumers.setAddress(customers.getAddress());
+                _costumers.setContactNumber(customers.getContactNumber());
+                customersRepo.save(_costumers);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Customers Updated Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Customer Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/customers";
         } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Customer Not Found");
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/customers";
     }
 
     @GetMapping("/Delete/customer/{customerId}")
-    public String deleteCustomers(@PathVariable long customerId, RedirectAttributes redirectAttributes) {
-        try {
-            customersRepo.deleteById(customerId);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Customer Deleted Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Customer Details");
+    public String deleteCustomers(@PathVariable long customerId, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            try {
+                customersRepo.deleteById(customerId);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Customer Deleted Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Customer Details");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/customers";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/customers";
     }
 }

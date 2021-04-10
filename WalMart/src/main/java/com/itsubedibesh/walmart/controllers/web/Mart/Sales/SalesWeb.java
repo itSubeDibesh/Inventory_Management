@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
@@ -22,17 +23,21 @@ public class SalesWeb {
     SalesRepo salesRepo;
 
     @GetMapping()
-    public String billingViewPage(final Model model, HttpSession session) {
+    public String billingViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Sales Billing");
             return "/pages/billing/billing";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Add/bill")
-    public String createBillViewPage(final Model model, HttpSession session) {
+    public String createBillViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             SalesFunctions func = new SalesFunctions(salesRepo);
@@ -44,12 +49,16 @@ public class SalesWeb {
             model.addAttribute("newInvoiceNumber", func.GetNewInvoiceNumber());
             model.addAttribute("todayDate", format.format(date));
             return "/pages/billing/billingAddEdit";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/View/{invoiceNumber}")
-    public String viewBillingPage(@PathVariable() String invoiceNumber, final Model model, HttpSession session) {
+    public String viewBillingPage(@PathVariable() String invoiceNumber, final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Sales Bill");
@@ -57,8 +66,12 @@ public class SalesWeb {
             model.addAttribute("BaseLink", "billing");
             model.addAttribute("invoiceNumber", invoiceNumber);
             return "/pages/billing/billingView";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
 }

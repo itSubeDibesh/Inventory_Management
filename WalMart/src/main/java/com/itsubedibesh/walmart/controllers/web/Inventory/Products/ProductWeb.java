@@ -28,25 +28,33 @@ public class ProductWeb {
     CategoriesRepo categoriesRepo;
 
     @GetMapping()
-    public String productsViewPage(final Model model, HttpSession session) {
+    public String productsViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Products");
             return "pages/products/products";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Add/product")
-    public String createProductViewPage(final Model model, HttpSession session) {
+    public String createProductViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Products");
             model.addAttribute("Action", "Add");
             model.addAttribute("BaseLink", "products");
             return "pages/products/productsAddEdit";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Update/product/{productId}")
@@ -67,90 +75,118 @@ public class ProductWeb {
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
                 return "redirect:/products";
             }
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @PostMapping(value = "/Add/product")
-    public String createProductAction(ProductDto products, @RequestParam("image") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
-        try {
-            String uploadDir = "src/Product_Images/";
-            String imageName;
-            imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            Optional<Categories> categoryId = categoriesRepo.findById(products.getCategoryId());
-            productsRepo.save(new Products(categoryId.get(), products.getProductName(), products.getVendorName(), products.getVendorContact(), imageName, products.getInvoiceNumber(), products.getInvoiceDate(), products.getPurchasedQuantity(), products.getPurchasedPrice()));
-            if (imageName.isEmpty()) {
-                imageName = null;
-            } else {
-                FileUploader.saveFile(uploadDir, imageName, multipartFile);
-            }
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Product Added Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
-        }
-        return "redirect:/products";
-    }
-
-    @PostMapping(value = "/Update/product")
-    public String updateProductAction(ProductDto products, @RequestParam("image") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
-        Optional<Products> productData = productsRepo.findById(products.getId());
-        if (productData.isPresent()) {
-            String uploadDir = "src/Product_Images/";
-            String imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            Products _products = productData.get();
-            Optional<Categories> categoryId = categoriesRepo.findById(products.getCategoryId());
-            _products.setCategoryId(categoryId.get());
-            _products.setProductName(products.getProductName());
-            _products.setVendorName(products.getVendorName());
-            _products.setVendorContact(products.getVendorContact());
-            _products.setInvoiceNumber(products.getInvoiceNumber());
-            _products.setInvoiceDate(products.getInvoiceDate());
-            _products.setPurchasedPrice(products.getPurchasedPrice());
-            _products.setPurchasedQuantity(products.getPurchasedQuantity());
-
-            if (imageName.isEmpty()) {
-                _products.setProductImage(products.getProductImage());
-            } else {
-                _products.setProductImage(imageName);
-                FileUploader.updateFile(uploadDir, products.getImagePath(), imageName, multipartFile);
-            }
-            productsRepo.save(_products);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Product Updated Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Product Not Found");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
-        }
-        return "redirect:/products";
-    }
-
-    @GetMapping("/Delete/product/{productId}")
-    public String deleteProduct(@PathVariable long productId, RedirectAttributes redirectAttributes) {
-        Optional<Products> productData = productsRepo.findById(productId);
-        if (productData.isPresent()) {
-            Products _products = productData.get();
+    public String createProductAction(ProductDto products, @RequestParam("image") MultipartFile multipartFile, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
             try {
-                FileUploader.deleteFile(_products.getImagePath());
-                productsRepo.deleteById(productId);
+                String uploadDir = "src/Product_Images/";
+                String imageName;
+                imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                Optional<Categories> categoryId = categoriesRepo.findById(products.getCategoryId());
+                productsRepo.save(new Products(categoryId.get(), products.getProductName(), products.getVendorName(), products.getVendorContact(), imageName, products.getInvoiceNumber(), products.getInvoiceDate(), products.getPurchasedQuantity(), products.getPurchasedPrice()));
+                if (imageName.isEmpty()) {
+                    imageName = null;
+                } else {
+                    FileUploader.saveFile(uploadDir, imageName, multipartFile);
+                }
                 redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-                redirectAttributes.addFlashAttribute("noticeMessage", "Product Deleted Successfully");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Product Added Successfully");
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-                redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Product Details");
+                redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             }
+            return "redirect:/products";
         } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Product Not Found");
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/products";
+    }
+
+    @PostMapping(value = "/Update/product")
+    public String updateProductAction(ProductDto products, @RequestParam("image") MultipartFile multipartFile, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            Optional<Products> productData = productsRepo.findById(products.getId());
+            if (productData.isPresent()) {
+                String uploadDir = "src/Product_Images/";
+                String imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                Products _products = productData.get();
+                Optional<Categories> categoryId = categoriesRepo.findById(products.getCategoryId());
+                _products.setCategoryId(categoryId.get());
+                _products.setProductName(products.getProductName());
+                _products.setVendorName(products.getVendorName());
+                _products.setVendorContact(products.getVendorContact());
+                _products.setInvoiceNumber(products.getInvoiceNumber());
+                _products.setInvoiceDate(products.getInvoiceDate());
+                _products.setPurchasedPrice(products.getPurchasedPrice());
+                _products.setPurchasedQuantity(products.getPurchasedQuantity());
+
+                if (imageName.isEmpty()) {
+                    _products.setProductImage(products.getProductImage());
+                } else {
+                    _products.setProductImage(imageName);
+                    FileUploader.updateFile(uploadDir, products.getImagePath(), imageName, multipartFile);
+                }
+                productsRepo.save(_products);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Product Updated Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Product Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/products";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
+        }
+    }
+
+    @GetMapping("/Delete/product/{productId}")
+    public String deleteProduct(@PathVariable long productId, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            Optional<Products> productData = productsRepo.findById(productId);
+            if (productData.isPresent()) {
+                Products _products = productData.get();
+                try {
+                    FileUploader.deleteFile(_products.getImagePath());
+                    productsRepo.deleteById(productId);
+                    redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                    redirectAttributes.addFlashAttribute("noticeMessage", "Product Deleted Successfully");
+                    redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+                } catch (Exception e) {
+                    redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                    redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Product Details");
+                    redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Product Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/products";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
+        }
     }
 }

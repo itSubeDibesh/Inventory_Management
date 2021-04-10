@@ -32,15 +32,19 @@ public class WarehouseAndMartProductsWeb {
     ProductsRepo productsRepo;
 
     @GetMapping("/Add/WarehouseAndMartProduct")
-    public String createWarehouseAndMartProductsViewPage(final Model model, HttpSession session) {
+    public String createWarehouseAndMartProductsViewPage(final Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
         if (loggedUser != null) {
             model.addAttribute("PageTitle", "Warehouse And Mart Product");
             model.addAttribute("Action", "Add");
             model.addAttribute("BaseLink", "products");
             return "pages/products/WarehouseAndMartProductsAddEdit";
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @GetMapping("/Update/WarehouseAndMartProduct/{productId}")
@@ -60,62 +64,90 @@ public class WarehouseAndMartProductsWeb {
                 redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
                 return "redirect:/products";
             }
-        } else
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
+            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
             return "redirect:/";
+        }
     }
 
     @PostMapping(value = "/Add/WarehouseAndMartProduct")
-    public String createWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes) {
-        try {
-            Optional<Products> productId = productsRepo.findById(products.getProductId());
-            Optional<WareHouseAndMart> WMId = wAMRepo.findById(products.getWMId());
-            wAMPRepo.save(new WarehouseAndMartProducts(WMId.get(), productId.get(), products.getAvailableQuantity(), products.getSellingPrice()));
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Added Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
+    public String createWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            try {
+                Optional<Products> productId = productsRepo.findById(products.getProductId());
+                Optional<WareHouseAndMart> WMId = wAMRepo.findById(products.getWMId());
+                wAMPRepo.save(new WarehouseAndMartProducts(WMId.get(), productId.get(), products.getAvailableQuantity(), products.getSellingPrice()));
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Added Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", e.getMessage());
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/products";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/products";
     }
 
     @PostMapping(value = "/Update/WarehouseAndMartProduct")
-    public String updateWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes) {
-        Optional<WarehouseAndMartProducts> productData = wAMPRepo.findById(products.getId());
-        if (productData.isPresent()) {
-            WarehouseAndMartProducts _products = productData.get();
-            Optional<Products> productId = productsRepo.findById(products.getProductId());
-            Optional<WareHouseAndMart> WMId = wAMRepo.findById(products.getWMId());
-            _products.setProductId(productId.get());
-            _products.setWMId(WMId.get());
-            _products.setAvailableQuantity(products.getAvailableQuantity());
-            _products.setSellingPrice(products.getSellingPrice());
-            wAMPRepo.save(_products);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Updated Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+    public String updateWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            Optional<WarehouseAndMartProducts> productData = wAMPRepo.findById(products.getId());
+            if (productData.isPresent()) {
+                WarehouseAndMartProducts _products = productData.get();
+                Optional<Products> productId = productsRepo.findById(products.getProductId());
+                Optional<WareHouseAndMart> WMId = wAMRepo.findById(products.getWMId());
+                _products.setProductId(productId.get());
+                _products.setWMId(WMId.get());
+                _products.setAvailableQuantity(products.getAvailableQuantity());
+                _products.setSellingPrice(products.getSellingPrice());
+                wAMPRepo.save(_products);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Updated Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "User Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/products";
         } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "User Not Found");
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/products";
     }
 
     @GetMapping("/Delete/WarehouseAndMartProduct/{productId}")
-    public String deleteWarehouseAndMartProducts(@PathVariable long productId, RedirectAttributes redirectAttributes) {
-        try {
-            wAMPRepo.deleteById(productId);
-            redirectAttributes.addFlashAttribute("noticeTitle", "Success");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Deleted Successfully");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Error");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Warehouse And Mart Product Details");
+    public String deleteWarehouseAndMartProducts(@PathVariable long productId, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            try {
+                wAMPRepo.deleteById(productId);
+                redirectAttributes.addFlashAttribute("noticeTitle", "Success");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Deleted Successfully");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Error");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Problem Deleting Warehouse And Mart Product Details");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            }
+            return "redirect:/products";
+        } else {
+            redirectAttributes.addFlashAttribute("noticeTitle", "Un-authorized");
+            redirectAttributes.addFlashAttribute("noticeMessage", "Unauthorized Access!");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+            return "redirect:/";
         }
-        return "redirect:/products";
     }
 }
