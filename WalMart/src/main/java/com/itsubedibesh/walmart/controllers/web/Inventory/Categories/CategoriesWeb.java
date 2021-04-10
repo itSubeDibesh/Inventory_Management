@@ -1,5 +1,6 @@
 package com.itsubedibesh.walmart.controllers.web.Inventory.Categories;
 
+import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Logins.Logins;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Categories.Categories;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Categories.CategoriesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -21,35 +23,47 @@ public class CategoriesWeb {
     CategoriesRepo categoriesRepo;
 
     @GetMapping()
-    public String categoriesPage(final Model model) {
-        model.addAttribute("PageTitle", "Categories");
-        return "pages/categories/categories";
+    public String categoriesPage(final Model model, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            model.addAttribute("PageTitle", "Categories");
+            return "pages/categories/categories";
+        } else
+            return "redirect:/";
     }
 
     @GetMapping("/Update/category/{categoryId}")
-    public String updateCategoryViewPage(@PathVariable() long categoryId, final Model model, RedirectAttributes redirectAttributes) {
-        // Fetch Data By Category Id
-        Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
-        if (categoryData.isPresent()) {
-            model.addAttribute("PageTitle", "Category");
-            model.addAttribute("Action", "Update");
-            model.addAttribute("BaseLink", "categories");
-            model.addAttribute("editCategory", categoryData.get());
-            return "pages/categories/categoryAddEdit";
-        } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Category Not Found");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
-            return "redirect:/categories";
-        }
+    public String updateCategoryViewPage(@PathVariable() long categoryId, final Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            // Fetch Data By Category Id
+            Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
+            if (categoryData.isPresent()) {
+                model.addAttribute("PageTitle", "Category");
+                model.addAttribute("Action", "Update");
+                model.addAttribute("BaseLink", "categories");
+                model.addAttribute("editCategory", categoryData.get());
+                return "pages/categories/categoryAddEdit";
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Category Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+                return "redirect:/categories";
+            }
+        } else
+            return "redirect:/";
     }
 
     @GetMapping("/Add/category")
-    public String createCategoryViewPage(final Model model) {
-        model.addAttribute("PageTitle", "Category");
-        model.addAttribute("Action", "Add");
-        model.addAttribute("BaseLink", "categories");
-        return "pages/categories/categoryAddEdit";
+    public String createCategoryViewPage(final Model model, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            model.addAttribute("PageTitle", "Category");
+            model.addAttribute("Action", "Add");
+            model.addAttribute("BaseLink", "categories");
+            return "pages/categories/categoryAddEdit";
+        } else
+            return "redirect:/";
     }
 
     @PostMapping(value = "/Add/category", consumes = "application/x-www-form-urlencoded")
@@ -102,29 +116,37 @@ public class CategoriesWeb {
     }
 
     @GetMapping("/Update/subCategory/{categoryId}")
-    public String updateSubCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model, RedirectAttributes redirectAttributes) {
-        // Fetch Data By Category Id
-        Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
-        if (categoryData.isPresent()) {
-            model.addAttribute("PageTitle", "Sub Category");
-            model.addAttribute("Action", "Update");
-            model.addAttribute("BaseLink", "categories");
-            model.addAttribute("editCategory", categoryData.get());
-            return "pages/categories/subCategoryAddEdit";
-        } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Category Not Found");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
-            return "redirect:/categories";
-        }
+    public String updateSubCategoryViewPage(@PathVariable(required = true) long categoryId, final Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            // Fetch Data By Category Id
+            Optional<Categories> categoryData = categoriesRepo.findById(categoryId);
+            if (categoryData.isPresent()) {
+                model.addAttribute("PageTitle", "Sub Category");
+                model.addAttribute("Action", "Update");
+                model.addAttribute("BaseLink", "categories");
+                model.addAttribute("editCategory", categoryData.get());
+                return "pages/categories/subCategoryAddEdit";
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Category Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+                return "redirect:/categories";
+            }
+        } else
+            return "redirect:/";
     }
 
     @GetMapping("/Add/subCategory")
-    public String createSubCategoryViewPage(final Model model) {
-        model.addAttribute("PageTitle", "Sub Category");
-        model.addAttribute("Action", "Add");
-        model.addAttribute("BaseLink", "categories");
-        return "pages/categories/subCategoryAddEdit";
+    public String createSubCategoryViewPage(final Model model, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            model.addAttribute("PageTitle", "Sub Category");
+            model.addAttribute("Action", "Add");
+            model.addAttribute("BaseLink", "categories");
+            return "pages/categories/subCategoryAddEdit";
+        } else
+            return "redirect:/";
     }
 
     @PostMapping(value = "/Add/subCategory", consumes = "application/x-www-form-urlencoded")

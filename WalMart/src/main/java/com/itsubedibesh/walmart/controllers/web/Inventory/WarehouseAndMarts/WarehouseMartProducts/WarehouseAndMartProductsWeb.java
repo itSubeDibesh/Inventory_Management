@@ -1,5 +1,6 @@
 package com.itsubedibesh.walmart.controllers.web.Inventory.WarehouseAndMarts.WarehouseMartProducts;
 
+import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Logins.Logins;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Products.Products;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Products.ProductsRepo;
 import com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseAndMart.WareHouseAndMart;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -30,36 +32,44 @@ public class WarehouseAndMartProductsWeb {
     ProductsRepo productsRepo;
 
     @GetMapping("/Add/WarehouseAndMartProduct")
-    public String createWarehouseAndMartProductsViewPage(final Model model) {
-        model.addAttribute("PageTitle", "Warehouse And Mart Product");
-        model.addAttribute("Action", "Add");
-        model.addAttribute("BaseLink", "products");
-        return "pages/products/WarehouseAndMartProductsAddEdit";
+    public String createWarehouseAndMartProductsViewPage(final Model model, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            model.addAttribute("PageTitle", "Warehouse And Mart Product");
+            model.addAttribute("Action", "Add");
+            model.addAttribute("BaseLink", "products");
+            return "pages/products/WarehouseAndMartProductsAddEdit";
+        } else
+            return "redirect:/";
     }
 
     @GetMapping("/Update/WarehouseAndMartProduct/{productId}")
-    public String updateWarehouseAndMartProductsViewPage(@PathVariable() long productId, final Model model, RedirectAttributes redirectAttributes) {
-        Optional<WarehouseAndMartProducts> productData = wAMPRepo.findById(productId);
-        if (productData.isPresent()) {
-            model.addAttribute("PageTitle", "Warehouse And Mart Product");
-            model.addAttribute("Action", "Update");
-            model.addAttribute("BaseLink", "products");
-            model.addAttribute("editWAMProduct", productData.get());
-            return "pages/products/WarehouseAndMartProductsAddEdit";
-        } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Details Not Found");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
-            return "redirect:/products";
-        }
+    public String updateWarehouseAndMartProductsViewPage(@PathVariable() long productId, final Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            Optional<WarehouseAndMartProducts> productData = wAMPRepo.findById(productId);
+            if (productData.isPresent()) {
+                model.addAttribute("PageTitle", "Warehouse And Mart Product");
+                model.addAttribute("Action", "Update");
+                model.addAttribute("BaseLink", "products");
+                model.addAttribute("editWAMProduct", productData.get());
+                return "pages/products/WarehouseAndMartProductsAddEdit";
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Details Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+                return "redirect:/products";
+            }
+        } else
+            return "redirect:/";
     }
 
     @PostMapping(value = "/Add/WarehouseAndMartProduct")
-    public String createWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes)  {
+    public String createWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes) {
         try {
             Optional<Products> productId = productsRepo.findById(products.getProductId());
             Optional<WareHouseAndMart> WMId = wAMRepo.findById(products.getWMId());
-            wAMPRepo.save(new WarehouseAndMartProducts(WMId.get(),productId.get(),products.getAvailableQuantity(),products.getSellingPrice()));
+            wAMPRepo.save(new WarehouseAndMartProducts(WMId.get(), productId.get(), products.getAvailableQuantity(), products.getSellingPrice()));
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");
             redirectAttributes.addFlashAttribute("noticeMessage", "Warehouse And Mart Product Added Successfully");
             redirectAttributes.addFlashAttribute("noticeBg", "bg-success");
@@ -72,7 +82,7 @@ public class WarehouseAndMartProductsWeb {
     }
 
     @PostMapping(value = "/Update/WarehouseAndMartProduct")
-    public String updateWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes){
+    public String updateWarehouseAndMartProductsAction(WarehouseAndMartProductsDto products, RedirectAttributes redirectAttributes) {
         Optional<WarehouseAndMartProducts> productData = wAMPRepo.findById(products.getId());
         if (productData.isPresent()) {
             WarehouseAndMartProducts _products = productData.get();

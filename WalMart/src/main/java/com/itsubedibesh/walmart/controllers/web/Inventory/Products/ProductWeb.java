@@ -1,5 +1,6 @@
 package com.itsubedibesh.walmart.controllers.web.Inventory.Products;
 
+import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Logins.Logins;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Categories.Categories;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Categories.CategoriesRepo;
 import com.itsubedibesh.walmart.controllers.api.Inventory.Products.Products;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -26,35 +28,47 @@ public class ProductWeb {
     CategoriesRepo categoriesRepo;
 
     @GetMapping()
-    public String productsViewPage(final Model model) {
-        model.addAttribute("PageTitle", "Products");
-        return "pages/products/products";
+    public String productsViewPage(final Model model, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            model.addAttribute("PageTitle", "Products");
+            return "pages/products/products";
+        } else
+            return "redirect:/";
     }
 
     @GetMapping("/Add/product")
-    public String createProductViewPage(final Model model) {
-        model.addAttribute("PageTitle", "Products");
-        model.addAttribute("Action", "Add");
-        model.addAttribute("BaseLink", "products");
-        return "pages/products/productsAddEdit";
+    public String createProductViewPage(final Model model, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            model.addAttribute("PageTitle", "Products");
+            model.addAttribute("Action", "Add");
+            model.addAttribute("BaseLink", "products");
+            return "pages/products/productsAddEdit";
+        } else
+            return "redirect:/";
     }
 
     @GetMapping("/Update/product/{productId}")
-    public String updateProductViewPage(@PathVariable() long productId, final Model model, RedirectAttributes redirectAttributes) {
-        // Fetch Data By LoginId Id
-        Optional<Products> productData = productsRepo.findById(productId);
-        if (productData.isPresent()) {
-            model.addAttribute("PageTitle", "Products");
-            model.addAttribute("Action", "Update");
-            model.addAttribute("BaseLink", "products");
-            model.addAttribute("editProduct", productData.get());
-            return "pages/products/productsAddEdit";
-        } else {
-            redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
-            redirectAttributes.addFlashAttribute("noticeMessage", "Product Details Not Found");
-            redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
-            return "redirect:/products";
-        }
+    public String updateProductViewPage(@PathVariable() long productId, final Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        Logins loggedUser = (Logins) session.getAttribute("LoginDetails");
+        if (loggedUser != null) {
+            // Fetch Data By LoginId Id
+            Optional<Products> productData = productsRepo.findById(productId);
+            if (productData.isPresent()) {
+                model.addAttribute("PageTitle", "Products");
+                model.addAttribute("Action", "Update");
+                model.addAttribute("BaseLink", "products");
+                model.addAttribute("editProduct", productData.get());
+                return "pages/products/productsAddEdit";
+            } else {
+                redirectAttributes.addFlashAttribute("noticeTitle", "Not Found");
+                redirectAttributes.addFlashAttribute("noticeMessage", "Product Details Not Found");
+                redirectAttributes.addFlashAttribute("noticeBg", "bg-danger");
+                return "redirect:/products";
+            }
+        } else
+            return "redirect:/";
     }
 
     @PostMapping(value = "/Add/product")
@@ -64,7 +78,7 @@ public class ProductWeb {
             String imageName;
             imageName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             Optional<Categories> categoryId = categoriesRepo.findById(products.getCategoryId());
-            productsRepo.save(new Products(categoryId.get(),products.getProductName(),products.getVendorName(),products.getVendorContact(),imageName,products.getInvoiceNumber(),products.getInvoiceDate(),products.getPurchasedQuantity(),products.getPurchasedPrice()));
+            productsRepo.save(new Products(categoryId.get(), products.getProductName(), products.getVendorName(), products.getVendorContact(), imageName, products.getInvoiceNumber(), products.getInvoiceDate(), products.getPurchasedQuantity(), products.getPurchasedPrice()));
             if (imageName.isEmpty()) {
                 imageName = null;
             } else {

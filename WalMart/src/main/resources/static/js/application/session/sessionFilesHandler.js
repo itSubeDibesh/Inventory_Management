@@ -20,9 +20,14 @@ const Session = window.sessionStorage,
 
 function setUserDetails() {
     // Reloads If No Key is Found
-    if (sessionKey.id == null) location.reload()
-    else {
-        if (Session.length == 0)window.location.href = "/dashboard";
+    if (sessionKey.id == null) {
+        if (window.location.href.includes("dashboard")) {
+            location.reload()
+        } else {
+            window.location.href = "/dashboard";
+        }
+    } else {
+        if (Session.length == 0) window.location.href = "/dashboard";
         // Add Image
         document.getElementById("LoggedInUserAvatar").innerHTML += `<img class="img-radius" src="/${sessionKey.avatar != "null" ? sessionKey.getImagePath : "images/defaultUser.png"}" alt="${sessionKey.userName != "null" ? sessionKey.userName : "User-Image"}" >`;
         // Add Name
