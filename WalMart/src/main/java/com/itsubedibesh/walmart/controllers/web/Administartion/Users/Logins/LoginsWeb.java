@@ -12,7 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
+
+import static com.itsubedibesh.walmart.controllers.configuration.FileUploader.FileUploader.saveFile;
+import static com.itsubedibesh.walmart.controllers.configuration.FileUploader.FileUploader.updateFile;
 
 @Controller
 @RequestMapping("/users")
@@ -91,7 +97,12 @@ public class LoginsWeb {
                 _login.setAvatar(logins.getAvatar());
             } else {
                 _login.setAvatar(avatarName);
-                FileUploader.updateFile(uploadDir, logins.getImagePath(), avatarName, multipartFile);
+                Path uploadPath = Paths.get(uploadDir+"/"+avatarName);
+                if (Files.exists(uploadPath)) {
+                    updateFile(uploadDir, logins.getImagePath(), avatarName, multipartFile);
+                }else{
+                    saveFile(uploadDir, avatarName, multipartFile);
+                }
             }
             loginsRepo.save(_login);
             redirectAttributes.addFlashAttribute("noticeTitle", "Success");

@@ -1,0 +1,222 @@
+{{>layout/bodyHead}}
+<div class="col-md-12 col-lg-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Credentials</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/settings/Update/login" method="post" enctype="multipart/form-data">
+                {{#editSettingsLogin.id}}
+                    <input type="hidden" id="id" name="id" value="{{editSettingsLogin.id}}">{{/editSettingsLogin.id}}
+                <!--  Set Form Fields  -->
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Avatar</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <input type="file" name="image" id="image" class="dropify form-control"
+                                       data-max-file-size="5M" data-allowed-file-extensions="png jpeg"
+                                       data-show-errors="true">
+                            </div>
+                            {{#editSettingsLogin.getImagePath}}
+                                <div class="col-sm-12 col-md-6">
+                                    {{#editSettingsLogin.avatar}}<input type="hidden" id="avatar" name="avatar"
+                                                                        value="{{editSettingsLogin.avatar}}">{{/editSettingsLogin.avatar}}
+                                    <span class="mb-4 form-control-static">Previous Image</span>
+                                    <br>
+                                    <a href="/{{#editSettingsLogin.avatar}}{{editSettingsLogin.getImagePath}}{{/editSettingsLogin.avatar}}{{^editSettingsLogin.avatar}}images/defaultUser.png{{/editSettingsLogin.avatar}}"
+                                       data-lightbox="{{editSettingsLogin.userName}}"
+                                       data-title="{{editSettingsLogin.userName}} Avatar">
+                                        <img src="/{{#editSettingsLogin.avatar}}{{editSettingsLogin.getImagePath}}{{/editSettingsLogin.avatar}}{{^editSettingsLogin.avatar}}images/defaultUser.png{{/editSettingsLogin.avatar}}"
+                                             class="mt-4 img-thumbnail img-radius" style="width: 25%;height: auto;"
+                                             alt="{{#editSettingsLogin.userName}}{{editSettingsLogin.userName}}{{/editSettingsLogin.userName}}">
+                                    </a>
+                                </div>
+                            {{/editSettingsLogin.getImagePath}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Username</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="userName" id="userName"
+                               value="{{#editSettingsLogin.userName}}{{editSettingsLogin.userName}}{{/editSettingsLogin.userName}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input type="password" required name="password" id="password" class="form-control"
+                                       maxlength="20" minlength="8">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-md bg-transparent" onclick="showPassword()"><i
+                                        class="fas fa-eye" id="showHide"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Email Address</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" name="email" id="email" value="{{#editSettingsLogin.email}}{{editSettingsLogin.email}}{{/editSettingsLogin.email}}" >
+                        <input type="email" required disabled
+                               value="{{#editSettingsLogin.email}}{{editSettingsLogin.email}}{{/editSettingsLogin.email}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Phone Number</label>
+                    <div class="col-sm-10">
+                        <input type="tel" required name="phone" id="phone"
+                               value="{{#editSettingsLogin.phone}}{{editSettingsLogin.phone}}{{/editSettingsLogin.phone}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> Update
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+<div class="col-md-12 col-lg-6">
+    <!-- Inverse table card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Details</h5>
+            <div class="card-header-right d-md-none d-xl-block">
+                <ul class="list-unstyled card-option">
+                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                    <li><i class="fa fa-minus minimize-card"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-block">
+            <h4 class="sub-title">Please Fill The Form Wisely😀😀!!</h4>
+            <form action="/settings/Update/user" method="post">
+                {{#editSettingsUser.id}}
+                    <input type="hidden" id="id" name="id" value="{{editSettingsUser.id}}">{{/editSettingsUser.id}}
+                <!--  Set Form Fields  -->
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Full Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="fullName" id="fullName"
+                               value="{{#editSettingsUser.fullName}}{{editSettingsUser.fullName}}{{/editSettingsUser.fullName}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Login User</label>
+
+
+                    <div class="col-sm-10">
+                        <input type="hidden" name="loginId" id="loginId" value="{{#editSettingsUser.loginId.id}}{{editSettingsUser.loginId.id}}{{/editSettingsUser.loginId.id}}">
+                        <input type="text" disabled
+                               value="{{#editSettingsUser.loginId.userName}}{{editSettingsUser.loginId.userName}}{{/editSettingsUser.loginId.userName}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Contact Number</label>
+                    <div class="col-sm-10">
+                        <input type="tel" required name="contactNumber" id="contactNumber"
+                               value="{{#editSettingsUser.contactNumber}}{{editSettingsUser.contactNumber}}{{/editSettingsUser.contactNumber}}"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Address</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="address" id="address"
+                               value="{{#editSettingsUser.address}}{{editSettingsUser.address}}{{/editSettingsUser.address}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Date of Birth</label>
+                    <div class="col-sm-10">
+                        <input type="date" required name="dob" id="dob" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Gender</label>
+                    <div class="col-sm-10">
+                        <select name="gender" id="gender" class="form-control" required>
+                            <option disabled selected>Select Gender</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">TPIN</label>
+                    <div class="col-sm-10">
+                        <input type="text" required name="tpin" id="tpin"
+                               value="{{#editSettingsUser.tpin}}{{editSettingsUser.tpin}}{{/editSettingsUser.tpin}}"
+                               class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-success m-2" type="submit"><i class="fas fa-edit"></i> Update
+                        </button>
+                        <button class="btn btn-danger m-2" type="reset"><i class="fas fa-trash"></i> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Inverse table card end -->
+</div>
+{{>layout/bodyFooter}}
+<script type="text/javascript" src="/js/common-pages.js"></script>
+<script>
+    const gender = ["Male", "Female", "Others", "None"],
+            genderId = document.getElementById("gender"),
+            selectedGender ={{#editSettingsUser.gender}}"{{editSettingsUser.gender}}"{{/editSettingsUser.gender}}{{^editSettingsUser.gender}}null{{/editSettingsUser.gender}},
+            selectedDob ={{#editSettingsUser.dob}}"{{editSettingsUser.dob}}".split(" ")[0]{{/editSettingsUser.dob}}{{^editSettingsUser.dob}}null{{/editSettingsUser.dob}},
+            dobId = document.getElementById("dob");
+    gender.forEach(item => {
+        genderId.innerHTML += `<option value="${item}" ${selectedGender != null && selectedGender == item ? "selected" : ""}>${item}</option>`;
+    });
+    if (selectedDob != null) {
+        dobId.value = selectedDob;
+    }
+
+    function showPassword() {
+        const password = document.getElementById("password"),
+                showHide = document.getElementById("showHide");
+        if (password.type == "password") {
+            // Show Password
+            showHide.classList.replace("fa-eye", "fa-eye-slash")
+            password.type = "text";
+        } else {
+            // Hide Password
+            showHide.classList.replace("fa-eye-slash", "fa-eye");
+            password.type = "password";
+        }
+    }
+</script>

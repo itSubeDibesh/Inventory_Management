@@ -2,8 +2,7 @@ const blockNavsElements = {
         inventory: `categories,warehouse_and_marts,products_management,products,damage_and_expiry`,
         administration: `users,roles_and_access,login_role_mapping`,
         mart: `items_showcase,billing`,
-        members: `customers,vendors`,
-        analytics: `purchase_history,sales_history`
+        members: `customers,vendors`
     }, navClassList = document.querySelectorAll('.ActivateIndividual'),
     blockNavList = document.querySelectorAll('.ActivateBlock');
 
