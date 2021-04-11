@@ -1,11 +1,27 @@
-# Walmart [![time tracker](https://wakatime.com/badge/github/itSubeDibesh/Inventory_Management.svg)](https://wakatime.com/badge/github/itSubeDibesh/Inventory_Management)
+# Walmart [![time tracker](https://wakatime.com/badge/github/itSubeDibesh/Inventory_Management.svg)](https://wakatime.com/badge/github/itSubeDibesh/Inventory_Management) 
+
+[!["JAVA"](https://img.shields.io/badge/Java-ff8800?style=for-the-badge&logo=java&logoColor=white)](https://www.java.com) 
+[!["Spring Boot"](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot) [!["Maven"](https://img.shields.io/badge/Maven-0769AD?style=for-the-badge&logoColor=white)](https://mvnrepository.com/)
+[!["Tom Cat"](https://img.shields.io/badge/Apache_Tomcat-orange?style=for-the-badge&logoColor=white)](http://tomcat.apache.org/)  
+[!["Mustache"](https://img.shields.io/badge/Mustache-darkorange?style=for-the-badge&logoColor=white)](https://mustache.github.io/) 
+[!["HTML5"](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) [!["JavaScript"](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
+[!["IQuery"](	https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)](https://jquery.com/) 
+[!["Css3"](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Css) 
+[!["Bootstrap"](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/) 
+[!["MySql"](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) 
+[!["MySql WorkBench"](https://img.shields.io/badge/MySQL_WorkBench-darkblue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) 
+[!["Github"](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https:/www.github.com/) 
+[!["Github Projects"](https://img.shields.io/badge/GitHub_Projects-100000?style=for-the-badge&logo=github&logoColor=white)](https:/www.github.com/) 
+[!["MD"](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)](https://www.markdownguide.org) 
+[!["Windows 10"](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/en-us/software-download/windows10) 
+[!["IntelliJ"](https://img.shields.io/badge/IntelliJ-parotgreen?style=for-the-badge&logoColor=white)](https://www.jetbrains.com/idea/) 
+___
 
 ## __Table of Contents__
 
 - [User Requirements](#User-Requirements)
 - [Requirements Analysis](#Requirements-Analysis)
-- [Tool Selection](#Tool-Selection)
-- [Language Selection](#Language-Selection)
+- [Language and Tool Selection](#Language-and-Tool-Selection)
 - [Application Setup](#Application-Setup)
 - [Database Selection](#Database-Selection)
     1. [Features of Database](#Features-of-Database)
@@ -101,9 +117,53 @@ to client requirements we must create an inventory application with following re
 Briefing out the requirements, we will be creating application which would store details of users, products, warehouses,
 customers and sales made to customer.
 
-## __Tool Selection__
+## __Language and Tool Selection__
+As per requirement language and some tools ware preety much sorted whereas some tools were picked at development phase. The list of tools used while developing the project are as follows.
 
-## __Language Selection__
+````
+Backend : Java, Spring Boot Framework
+Package Manager: Maven
+Server : Apache Tomcat
+Frontend : Html5
+Template Engine : Mustache
+Styling : Bootstrap4, Css
+Scripting : JS and Mini Js Libraries Like jQuery
+Documentation : MarkDown (MD)
+Database : MySQL
+Database Management system : MySQL Workbench
+IDE : Intelij
+Version Control : GitHub
+Project Manager : GitHub Projects
+Development OS: Windows 10 Home Edition
+````
+
+[!["JAVA"](https://img.shields.io/badge/Java-ff8800?style=for-the-badge&logo=java&logoColor=white)](https://www.java.com) 
+[!["Spring Boot"](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot) 
+[!["Maven"](https://img.shields.io/badge/Maven-0769AD?style=for-the-badge&logoColor=white)](https://mvnrepository.com/)
+[!["Tom Cat"](https://img.shields.io/badge/Apache_Tomcat-orange?style=for-the-badge&logoColor=white)](http://tomcat.apache.org/)  
+
+
+
+[!["Mustache"](https://img.shields.io/badge/Mustache-darkorange?style=for-the-badge&logoColor=white)](https://mustache.github.io/) 
+[!["HTML5"](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) 
+
+[!["JavaScript"](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) 
+[!["IQuery"](	https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)](https://jquery.com/) 
+
+[!["Css3"](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Css) 
+[!["Bootstrap"](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/) 
+
+
+[!["MySql"](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) 
+[!["MySql WorkBench"](https://img.shields.io/badge/MySQL_WorkBench-darkblue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) 
+
+[!["Github"](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https:/www.github.com/) 
+[!["Github Projects"](https://img.shields.io/badge/GitHub_Projects-100000?style=for-the-badge&logo=github&logoColor=white)](https:/www.github.com/) 
+[!["MD"](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)](https://www.markdownguide.org) 
+
+[!["Windows 10"](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/en-us/software-download/windows10) 
+[!["IntelliJ"](https://img.shields.io/badge/IntelliJ-parotgreen?style=for-the-badge&logoColor=white)](https://www.jetbrains.com/idea/) 
+
 
 ## __Application Setup__
 
