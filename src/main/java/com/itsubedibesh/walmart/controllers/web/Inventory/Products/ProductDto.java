@@ -2,7 +2,7 @@ package com.itsubedibesh.walmart.controllers.web.Inventory.Products;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Transient;
 import java.util.Date;
 
 public class ProductDto {

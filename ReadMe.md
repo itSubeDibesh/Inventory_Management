@@ -33,7 +33,7 @@
 - [Features of Application](#Features-of-Application)
 - [Spring MVC Workflow](#Spring-MVC-Workflow)
   1. [The DispatcherServlet](#The-DispatcherServlet)
-- [Controller Types and Lists](#Controller-Types-and-Lists)
+- [Controller Types](#Controller-Types)
 - [Limitation of Project](#Limitation-of-Project)
 - [Further Enhancement](#Further-Enhancement)
 - [Reference Documentation](#Reference-Documentation)
@@ -316,11 +316,23 @@ Following is the sequence of events corresponding to an incoming HTTP request to
 All the above-mentioned components, i.e. HandlerMapping, Controller, and ViewResolver are parts of WebApplicationContext w which is an extension of the plainApplicationContext with some extra features necessary for web applications.
 
 [Read More](https://www.tutorialspoint.com/spring/spring_web_mvc_framework.htm)
-## __Controller Types and Lists__
+## __Controller Types__
+Basically there are two types of controller. Rest controller and Web controller.
+Rest Controllers are used for making restfull services like __API__ where as Web controllers are used to handel client request. In our project All the rest controllers are listed under [api directory](./src/main/java/com/itsubedibesh/walmart/controllers/api) and web cotroller are listed under [web directory](src\main\java\com\itsubedibesh\walmart\controllers\web).
 
 ## __Limitation of Project__
+With every projects flaws are surely listed. Some of the drawbacks of projects are as follows.
+1. Poor Security implementation - Lack of CSRF policy, Lower security implementation using session only.
+1. Lack of roles and permissions
+1. Lack of Warehouse and Mart seperation
 
 ## __Further Enhancement__ 
+Some of the further enhancement of project are as follows:
+1. Implement Proper Security Policy
+1. Implement Proper Role and Permission
+1. Implement Event logging
+1. Implement Purchase and Sales Analysis   
+1. Implement Proper Seperation policy
 
 ## __Reference Documentation__
 

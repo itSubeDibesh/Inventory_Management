@@ -1,7 +1,6 @@
 package com.itsubedibesh.walmart.controllers.api.Mart.Sales;
 
 import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Users.Users;
-import com.itsubedibesh.walmart.controllers.api.Inventory.Products.Products;
 import com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseMartProducts.WarehouseAndMartProducts;
 import com.itsubedibesh.walmart.controllers.api.Members.Customers.Customers;
 import com.itsubedibesh.walmart.controllers.configuration.Audit.Audit;

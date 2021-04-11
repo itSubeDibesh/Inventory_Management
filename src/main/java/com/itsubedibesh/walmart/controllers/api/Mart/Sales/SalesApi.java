@@ -2,7 +2,6 @@ package com.itsubedibesh.walmart.controllers.api.Mart.Sales;
 
 import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Users.Users;
 import com.itsubedibesh.walmart.controllers.api.Administartion.Users.Users.UsersRepo;
-import com.itsubedibesh.walmart.controllers.api.Inventory.Products.Products;
 import com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseMartProducts.WarehouseAndMartProducts;
 import com.itsubedibesh.walmart.controllers.api.Inventory.WarehouseAndMarts.WarehouseMartProducts.WarehouseAndMartProductsRepo;
 import com.itsubedibesh.walmart.controllers.api.Members.Customers.Customers;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
