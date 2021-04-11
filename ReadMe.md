@@ -15,23 +15,24 @@
 [!["MD"](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)](https://www.markdownguide.org) 
 [!["Windows 10"](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/en-us/software-download/windows10) 
 [!["IntelliJ"](https://img.shields.io/badge/IntelliJ-parotgreen?style=for-the-badge&logoColor=white)](https://www.jetbrains.com/idea/) 
-___
 
 ## __Table of Contents__
 
 - [User Requirements](#User-Requirements)
-- [Requirements Analysis](#Requirements-Analysis)
+- [Requirements Analysis](#Requirements-Analysis) 
 - [Language and Tool Selection](#Language-and-Tool-Selection)
 - [Application Setup](#Application-Setup)
 - [Database Selection](#Database-Selection)
     1. [Features of Database](#Features-of-Database)
     1. [Database Scripting With Spring Data JPA](#Database-Scripting-With-Spring-Data-JPA)
     1. [Database Setup](#Database-Setup)
+    1. [First Login Credentials](#First-Login-Credentials)
     1. [Database Schema Reverse Enginered](#Database-Schema-Reverse-Enginered)
 - [Project Workflow](#Project-Workflow)
 - [Folder Structure](#Folder-Structure)
 - [Features of Application](#Features-of-Application)
 - [Spring MVC Workflow](#Spring-MVC-Workflow)
+  1. [The DispatcherServlet](#The-DispatcherServlet)
 - [Controller Types and Lists](#Controller-Types-and-Lists)
 - [Limitation of Project](#Limitation-of-Project)
 - [Further Enhancement](#Further-Enhancement)
@@ -142,8 +143,6 @@ Development OS: Windows 10 Home Edition
 [!["Maven"](https://img.shields.io/badge/Maven-0769AD?style=for-the-badge&logoColor=white)](https://mvnrepository.com/)
 [!["Tom Cat"](https://img.shields.io/badge/Apache_Tomcat-orange?style=for-the-badge&logoColor=white)](http://tomcat.apache.org/)  
 
-
-
 [!["Mustache"](https://img.shields.io/badge/Mustache-darkorange?style=for-the-badge&logoColor=white)](https://mustache.github.io/) 
 [!["HTML5"](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) 
 
@@ -152,7 +151,6 @@ Development OS: Windows 10 Home Edition
 
 [!["Css3"](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Css) 
 [!["Bootstrap"](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/) 
-
 
 [!["MySql"](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) 
 [!["MySql WorkBench"](https://img.shields.io/badge/MySQL_WorkBench-darkblue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) 
@@ -166,6 +164,15 @@ Development OS: Windows 10 Home Edition
 
 
 ## __Application Setup__
+Starting application is easy after you configure number of things. Follow the steps below to run the project.
+1. Open Terminal
+1. Clone the Project using `git clone https://github.com/itSubeDibesh/Inventory_Management.git` command
+1. [Setup Database](#Database-Setup)
+1. Go to the cloned Directory
+1. Run `mvnw package` for __windows__ or `./mvnw package` for __mac__. This will create Jar file inside `target` sub-directory.
+1. Go inside `target` sub-directory
+1. Now run the jar file in there. Use command java -jar name.jar [ name is the name of your created jar file.]
+1. Your application Should be running at port printed on your terminal.
 
 ## __Database Selection__
 
@@ -232,6 +239,14 @@ spring.datasource.password= password
 ````
 Change `spring.datasource.username` and `spring.datasource.password` to your user name and password form __MySqlWorkbench__ instance.
 
+ ### __First Login Credentials__
+
+Your First Login Credentials are seeded to database at inital database setup. Use following credentials to login into app.
+````
+Username : admin
+Password : password
+```` 
+
 ### __Database Schema Reverse Enginered__
 
 If you Follow Workbench Reverse Enginering then you will get [model](./Assets/Schema/Model/Inventory_Management.mwb) which will give ER-Diagram as output of your schema as
@@ -241,13 +256,66 @@ following.
 </p>
 
 ## __Project Workflow__
+So when the server serves the file a workflow is created which clears up the request made from clients and files served to clients. __Spring boot framework__ follows coding standard utilizing [convention over configuration](https://en.wikipedia.org/wiki/Convention_over_configuration) simplyfing and optimizing the code yet completing [spring mvc workflow](#Spring-MVC-Workflow) as well. 
+
+"**Convention over configuration is a software design paradigm used by software frameworks that attempts to decrease the number of decisions that a developer using the framework is required to make without necessarily losing flexibility.**" 
+
+!["Spring Boot Workflow"](https://media.geeksforgeeks.org/wp-content/uploads/20190822182410/Spring-Boot-flow-architecture.jpg)
+
+As shown in the figure above when a request is made from client a controller handles the request and redirects to a service layer, which simultaneously requests the revilent model and with ["Spring Data JPA"](#Database-Scripting-With-Spring-Data-JPA) a request to database is made and result is thus sent to client filtering through service layer and back to controller.
 
 ## __Folder Structure__
+The core folder of application is shown below.
+<a href="Assets/Images/Folder Structure.png"><img src="Assets/Images/Folder Structure.png" alt="ER Diagram"></a>
+</p>
+
+As you can see inside controllers folder there are 5 different sub folders which servs their owne purpose.
+1. `API directory` includes individual api endpoints, Repository to make database calls and model used for specific table in database.
+1. ` Configuration directory` includes global configurations used in controllers to optimize workflows.
+1. `Error directory` includes a error handling methord for invalid requests.
+1. `Seeder Directory` includes initial seeder data for the database.
+1. `Web Directory` includesall web controllers and DTOs(Data Transfer Objects) for individual table.
 
 ## __Features of Application__
+The features of Application are as follows:
+<pre>
+                                       |---------> Users
+                                       |---------> Logins [Login and Authorize Users]
+                                       |---------> Products
+                                       |---------> Categories
+  Create, Read, Update and Delete <----|---------> Sales
+                                       |---------> Customers
+                                       |---------> Warehouse And Marts
+                                       |---------> Damages [Except Update]
+                                       |---------> Warehouse And Marts Products [Transfer Products]
+</pre>
 
 ## __Spring MVC Workflow__
+The Spring Web MVC framework provides Model-View-Controller (MVC) architecture and ready components that can be used to develop flexible and loosely coupled web applications. The MVC pattern results in separating the different aspects of the application (input logic, business logic, and UI logic), while providing a loose coupling between these elements.
 
+- The Model encapsulates the application data and in general they will consist of POJO.
+- The View is responsible for rendering the model data and in general it generates HTML output that the client's browser can interpret.
+- The Controller is responsible for processing user requests and building an appropriate model and passes it to the view for rendering.
+
+### __The DispatcherServlet__
+
+The Spring Web model-view-controller (MVC) framework is designed around a DispatcherServlet that handles all the HTTP requests and responses. The request processing workflow of the Spring Web MVC DispatcherServlet is illustrated in the following diagram.
+
+!["DispatcherServlet"](https://www.tutorialspoint.com/spring/images/spring_dispatcherservlet.png)
+
+Following is the sequence of events corresponding to an incoming HTTP request to DispatcherServlet:-
+
+- After receiving an HTTP request, DispatcherServlet consults the HandlerMapping to call the appropriate Controller.
+
+- The Controller takes the request and calls the appropriate service methods based on used GET or POST method. The service method will set model data based on defined business logic and returns view name to the DispatcherServlet.
+
+- The DispatcherServlet will take help from ViewResolver to pickup the defined view for the request.
+
+- Once view is finalized, The DispatcherServlet passes the model data to the view which is finally rendered on the browser.
+
+All the above-mentioned components, i.e. HandlerMapping, Controller, and ViewResolver are parts of WebApplicationContext w which is an extension of the plainApplicationContext with some extra features necessary for web applications.
+
+[Read More](https://www.tutorialspoint.com/spring/spring_web_mvc_framework.htm)
 ## __Controller Types and Lists__
 
 ## __Limitation of Project__
