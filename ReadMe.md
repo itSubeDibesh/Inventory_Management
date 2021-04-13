@@ -22,6 +22,7 @@
 - [Requirements Analysis](#Requirements-Analysis) 
 - [Language and Tool Selection](#Language-and-Tool-Selection)
 - [Application Setup](#Application-Setup)
+- [Running application via terminal](#Running-application-via-terminal)
 - [Database Selection](#Database-Selection)
     1. [Features of Database](#Features-of-Database)
     1. [Database Scripting With Spring Data JPA](#Database-Scripting-With-Spring-Data-JPA)
@@ -168,11 +169,24 @@ Starting application is easy after you configure number of things. Follow the st
 1. Open Terminal
 1. Clone the Project using `git clone https://github.com/itSubeDibesh/Inventory_Management.git` command
 1. [Setup Database](#Database-Setup)
-1. Go to the cloned Directory
-1. Run `mvnw package` for __windows__ or `./mvnw package` for __mac__. This will create Jar file inside `target` sub-directory.
-1. Go inside `target` sub-directory
-1. Now run the jar file in there. Use command `java -jar walmart-0.0.1.jar` [walmart-0.0.1 is the name of your created jar file.]
-1. Your application Should be running at port printed on your terminal.
+1. [Run application](#Running-application-via-terminal)
+
+
+## __Running application via terminal__
+There are two approach to run application via terminal.
+
+1.  Follow the steps below:
+    1. Go to the cloned directory
+    1. Run `mvnw package` for __windows__ or `./mvnw package` for __mac__. This will create Jar file inside `target` sub-directory.
+    1. Go inside `target` sub-directory
+    1. Now run the jar file in there. Use command `java -jar walmart-0.0.1.jar` (walmart-0.0.1) is the name of your created jar file.
+    1. Your application Should be running at port printed on your terminal.
+
+`Note: To follow th eSecond you must have maven installed.` Check out how to [install maven](https://mkyong.com/maven/how-to-install-maven-in-windows/)
+1.  Follow the steps below:
+    1. Go to the cloned directory
+    1. run `mvn spring-boot:run`
+    1. Your application Should be running at port printed on your terminal.
 
 ## __Database Selection__
 
